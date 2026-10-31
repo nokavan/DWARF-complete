@@ -1,0 +1,51 @@
+name: Build mod pack
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Lua 5.1 (same version as the game)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lua5.1
+
+      - name: Lua syntax check
+        run: luac5.1 -p mod/script/campaign/mod/*.lua
+
+      - name: Lua logic tests (stubbed game API)
+        run: lua5.1 tools/test_mod.lua
+
+      - name: Build .pack
+        run: python3 tools/build_pack.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dwf_ancient_lineages
+          path: dist/dwf_ancient_lineages.pack
+
+      - name: Publish "latest" release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --yes --cleanup-tag 2>/dev/null || true
+          gh release create latest dist/dwf_ancient_lineages.pack \
+            --title "Последняя сборка (main)" \
+            --notes "Автосборка из коммита ${GITHUB_SHA::7}. Положите dwf_ancient_lineages.pack в папку data игры и включите в лаунчере." \
+            --target "$GITHUB_SHA" --prerelease
+
+      - name: Publish tagged release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/dwf_ancient_lineages.pack --title "$GITHUB_REF_NAME" --generate-notes
