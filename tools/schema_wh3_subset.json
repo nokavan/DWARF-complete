@@ -1,0 +1,151 @@
+{
+ "dilemmas_tables": {
+  "version": 5,
+  "fields": [
+   [
+    "generate",
+    "Boolean"
+   ],
+   [
+    "key",
+    "StringU8"
+   ],
+   [
+    "localised_description",
+    "StringU8"
+   ],
+   [
+    "localised_title",
+    "StringU8"
+   ],
+   [
+    "ui_image",
+    "StringU8"
+   ],
+   [
+    "prioritized",
+    "Boolean"
+   ],
+   [
+    "event_category",
+    "OptionalStringU8"
+   ],
+   [
+    "sound_popup_override",
+    "OptionalStringU8"
+   ],
+   [
+    "sound_click_override",
+    "OptionalStringU8"
+   ]
+  ]
+ },
+ "cdir_events_dilemma_choice_details_tables": {
+  "version": 4,
+  "fields": [
+   [
+    "choice_key",
+    "StringU8"
+   ],
+   [
+    "dilemma_key",
+    "StringU8"
+   ],
+   [
+    "audio_event_hover",
+    "OptionalStringU8"
+   ],
+   [
+    "audio_choice_vo",
+    "OptionalStringU8"
+   ]
+  ]
+ },
+ "pooled_resource_factors_tables": {
+  "version": 5,
+  "fields": [
+   [
+    "key",
+    "StringU8"
+   ],
+   [
+    "is_hidden",
+    "Boolean"
+   ]
+  ]
+ },
+ "pooled_resource_factor_junctions_tables": {
+  "version": 3,
+  "fields": [
+   [
+    "unique_id",
+    "StringU8"
+   ],
+   [
+    "factor",
+    "StringU8"
+   ],
+   [
+    "resource",
+    "StringU8"
+   ],
+   [
+    "minimum",
+    "I32"
+   ],
+   [
+    "maximum",
+    "I32"
+   ],
+   [
+    "specific_faction_set",
+    "OptionalStringU8"
+   ],
+   [
+    "sort_order",
+    "I32"
+   ]
+  ]
+ },
+ "effect_bundles_tables": {
+  "version": 4,
+  "fields": [
+   [
+    "key",
+    "StringU8"
+   ],
+   [
+    "localised_description",
+    "StringU8"
+   ],
+   [
+    "localised_title",
+    "StringU8"
+   ],
+   [
+    "bundle_target",
+    "StringU8"
+   ],
+   [
+    "priority",
+    "I32"
+   ],
+   [
+    "ui_icon",
+    "StringU8"
+   ],
+   [
+    "is_global_effect",
+    "Boolean"
+   ],
+   [
+    "show_in_3d_space",
+    "Boolean"
+   ],
+   [
+    "owner_only",
+    "Boolean"
+   ]
+  ]
+ }
+}

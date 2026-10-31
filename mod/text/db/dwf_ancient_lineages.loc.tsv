@@ -1,0 +1,36 @@
+key	text	tooltip
+#Loc;1;text/db/dwf_ancient_lineages.loc
+dilemmas_localised_title_dwf_al_dilemma_page_1	Древние Родословные	false
+dilemmas_localised_description_dwf_al_dilemma_page_1	Под горами хранятся Книги Родов — летописи древних линий, восходящих к самим Предкам. Каждая монета Клятвенного Золота, отданная роду, пробуждает его кровь и силу в наших воинах и крепостях.\n\nРодословные можно возвышать бесконечно; с каждым уровнем цена растёт. Каждые 5 уровней — Веха рода (+10% к его дарам).\nЕсли варианту недостаточно Клятвенного Золота, вместо даров показан знак «Недостаточно Клятвенного Золота».	false
+dilemmas_localised_title_dwf_al_dilemma_page_2	Древние Родословные	false
+dilemmas_localised_description_dwf_al_dilemma_page_2	Под горами хранятся Книги Родов — летописи древних линий, восходящих к самим Предкам. Каждая монета Клятвенного Золота, отданная роду, пробуждает его кровь и силу в наших воинах и крепостях.\n\nРодословные можно возвышать бесконечно; с каждым уровнем цена растёт. Каждые 5 уровней — Веха рода (+10% к его дарам).\nЕсли варианту недостаточно Клятвенного Золота, вместо даров показан знак «Недостаточно Клятвенного Золота».	false
+cdir_events_dilemma_choice_details_localised_choice_title_dwf_al_dilemma_page_1FIRST	Род Гримнира	false
+cdir_events_dilemma_choice_details_localised_choice_label_dwf_al_dilemma_page_1FIRST	Воители, что не знают отступления. Атака в ближнем бою и натиск армий.	false
+cdir_events_dilemma_choice_details_localised_choice_title_dwf_al_dilemma_page_1SECOND	Род Валайи	false
+cdir_events_dilemma_choice_details_localised_choice_label_dwf_al_dilemma_page_1SECOND	Хранители очагов. Защита в ближнем бою и порядок в провинциях.	false
+cdir_events_dilemma_choice_details_localised_choice_title_dwf_al_dilemma_page_1THIRD	Род Грунгни	false
+cdir_events_dilemma_choice_details_localised_choice_label_dwf_al_dilemma_page_1THIRD	Рудознатцы и мастера. Доход и удешевление строительства.	false
+cdir_events_dilemma_choice_details_localised_choice_title_dwf_al_dilemma_page_1FOURTH	Далее →	false
+cdir_events_dilemma_choice_details_localised_choice_label_dwf_al_dilemma_page_1FOURTH	Другие древние родословные.	false
+cdir_events_dilemma_choice_details_localised_choice_title_dwf_al_dilemma_page_2FIRST	Род Моргрима	false
+cdir_events_dilemma_choice_details_localised_choice_label_dwf_al_dilemma_page_2FIRST	Инженеры и строители машин. Снижение содержания и стоимости найма армий.	false
+cdir_events_dilemma_choice_details_localised_choice_title_dwf_al_dilemma_page_2SECOND	Род Тунгни	false
+cdir_events_dilemma_choice_details_localised_choice_label_dwf_al_dilemma_page_2SECOND	Рунные кузнецы. Боевой дух и броня армий.	false
+cdir_events_dilemma_choice_details_localised_choice_title_dwf_al_dilemma_page_2THIRD	← Назад	false
+cdir_events_dilemma_choice_details_localised_choice_label_dwf_al_dilemma_page_2THIRD	К первым родословным.	false
+cdir_events_dilemma_choice_details_localised_choice_title_dwf_al_dilemma_page_2FOURTH	Закрыть	false
+cdir_events_dilemma_choice_details_localised_choice_label_dwf_al_dilemma_page_2FOURTH	Вернуться к делам владыки.	false
+effect_bundles_localised_title_dwf_al_bundle_grimnir	Род Гримнира	false
+effect_bundles_localised_description_dwf_al_bundle_grimnir	Кровь Гримнира Бесстрашного течёт в наших воинах.	false
+effect_bundles_localised_title_dwf_al_bundle_valaya	Род Валайи	false
+effect_bundles_localised_description_dwf_al_bundle_valaya	Валайя хранит наши очаги и щиты.	false
+effect_bundles_localised_title_dwf_al_bundle_grungni	Род Грунгни	false
+effect_bundles_localised_description_dwf_al_bundle_grungni	Благословение Грунгни — в каждой жиле руды и каждом камне.	false
+effect_bundles_localised_title_dwf_al_bundle_morgrim	Род Моргрима	false
+effect_bundles_localised_description_dwf_al_bundle_morgrim	Наследие Моргрима — машины и мудрость инженеров.	false
+effect_bundles_localised_title_dwf_al_bundle_thungni	Род Тунгни	false
+effect_bundles_localised_description_dwf_al_bundle_thungni	Руны Тунгни крепят броню и сердца.	false
+effect_bundles_localised_title_dwf_al_bundle_locked	Недостаточно Клятвенного Золота	false
+effect_bundles_localised_description_dwf_al_bundle_locked	Для возвышения этого рода не хватает Клятвенного Золота. Выбор этого варианта ничего не даст.	false
+pooled_resource_factors_display_name_positive_dwf_al_lineages	Древние Родословные	false
+pooled_resource_factors_display_name_negative_dwf_al_lineages	Древние Родословные	false

@@ -1,0 +1,10 @@
+choice_key	dilemma_key	audio_event_hover	audio_choice_vo
+#cdir_events_dilemma_choice_details_tables;4;db/cdir_events_dilemma_choice_details_tables/dwf_ancient_lineages
+FIRST	dwf_al_dilemma_page_1		
+SECOND	dwf_al_dilemma_page_1		
+THIRD	dwf_al_dilemma_page_1		
+FOURTH	dwf_al_dilemma_page_1		
+FIRST	dwf_al_dilemma_page_2		
+SECOND	dwf_al_dilemma_page_2		
+THIRD	dwf_al_dilemma_page_2		
+FOURTH	dwf_al_dilemma_page_2		
