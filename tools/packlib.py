@@ -58,9 +58,19 @@ def parse_bool(s):
     raise ValueError("bad boolean: %r" % s)
 
 
+def w_opt_i32(s):
+    return w_bool(False) if s == "" else w_bool(True) + w_i32(int(s))
+
+
 ENCODERS = {
     "Boolean": lambda s: w_bool(parse_bool(s)),
+    "I16": lambda s: struct.pack("<h", int(s or 0)),
     "I32": lambda s: w_i32(int(s or 0)),
+    "I64": lambda s: struct.pack("<q", int(s or 0)),
+    "F32": lambda s: struct.pack("<f", float(s or 0)),
+    "F64": lambda s: struct.pack("<d", float(s or 0)),
+    "OptionalI32": w_opt_i32,
+    "ColourRGB": lambda s: w_u32(int(s or "0", 16)),
     "StringU8": w_str_u8,
     "OptionalStringU8": w_opt_str_u8,
     "StringU16": w_str_u16,
@@ -118,7 +128,13 @@ class Reader:
 
 DECODERS = {
     "Boolean": lambda r: "true" if r.bool() else "false",
+    "I16": lambda r: str(struct.unpack("<h", r.take(2))[0]),
     "I32": lambda r: str(r.i32()),
+    "I64": lambda r: str(struct.unpack("<q", r.take(8))[0]),
+    "F32": lambda r: repr(struct.unpack("<f", r.take(4))[0]),
+    "F64": lambda r: repr(struct.unpack("<d", r.take(8))[0]),
+    "OptionalI32": lambda r: str(r.i32()) if r.bool() else "",
+    "ColourRGB": lambda r: "%06X" % r.u32(),
     "StringU8": lambda r: r.str_u8(),
     "OptionalStringU8": lambda r: r.opt_str_u8(),
     "StringU16": lambda r: r.str_u16(),
@@ -149,18 +165,27 @@ def read_tsv(path):
 
 
 # ---------------------------------------------------------------- DB
-def encode_db(table, version, rows, schema):
-    sd = schema[table]
-    if sd["version"] != version:
-        raise ValueError("%s: TSV version %d != schema version %d" % (table, version, sd["version"]))
+def fields_for(schema, table, version):
+    defs = schema.get(table)
+    if defs is None:
+        raise ValueError("no schema for table %s" % table)
+    fields = defs.get(str(version))
+    if fields is None:
+        raise ValueError("%s: no schema definition for version %d (known: %s)" % (table, version, sorted(defs)))
+    return fields
+
+
+def encode_db(table, version, rows, schema, guid_seed=""):
+    fields = fields_for(schema, table, version)
     out = bytearray()
-    guid = str(uuid.uuid5(uuid.NAMESPACE_URL, "dwf_ancient_lineages/" + table))
+    guid = str(uuid.uuid5(uuid.NAMESPACE_URL, guid_seed + "/" + table))
     out += GUID_MARKER + w_str_u16(guid)
-    out += VERSION_MARKER + w_i32(version)
+    if version > 0:  # RPFM/game: version-0 tables have no version marker
+        out += VERSION_MARKER + w_i32(version)
     out += w_bool(True)
     out += w_u32(len(rows))
     for row in rows:
-        for name, ftype in sd["fields"]:
+        for name, ftype in fields:
             if name not in row:
                 raise ValueError("%s: missing column %s" % (table, name))
             out += ENCODERS[ftype](row[name])
@@ -168,7 +193,6 @@ def encode_db(table, version, rows, schema):
 
 
 def decode_db(data, table, schema):
-    sd = schema[table]
     r = Reader(data)
     guid = None
     if data[:4] == GUID_MARKER:
@@ -180,9 +204,10 @@ def decode_db(data, table, schema):
         version = r.i32()
     r.bool()
     count = r.u32()
+    fields = fields_for(schema, table, version)
     rows = []
     for _ in range(count):
-        rows.append({name: DECODERS[ft](r) for name, ft in sd["fields"]})
+        rows.append({name: DECODERS[ft](r) for name, ft in fields})
     if not r.done():
         raise ValueError("%s: %d trailing bytes" % (table, len(data) - r.p))
     return guid, version, rows

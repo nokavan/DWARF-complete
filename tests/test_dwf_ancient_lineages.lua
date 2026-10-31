@@ -1,10 +1,10 @@
 --[[
   Offline test of the campaign script with a stubbed game API.
-  Run:  lua5.1 tools/test_mod.lua
+  Run:  lua5.1 tests/test_dwf_ancient_lineages.lua
   This checks the script's own logic (levels, costs, payloads, dilemma flow, caps).
   It cannot check the real game: effect keys, UI templates, etc.
 ]]
-local SCRIPT = "mod/script/campaign/mod/dwf_ancient_lineages.lua"
+local SCRIPT = "mods/dwf_ancient_lineages/script/campaign/mod/dwf_ancient_lineages.lua"
 local unpack = unpack or table.unpack
 _G.unpack = unpack
 

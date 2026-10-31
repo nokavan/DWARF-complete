@@ -1,4 +1,15 @@
-# Древние Родословные Гномов — мод для Total War: WARHAMMER III
+# Моды для Total War: WARHAMMER III
+
+| Мод | Папка | Статус |
+|---|---|---|
+| Древние Родословные Гномов | [`mods/dwf_ancient_lineages`](mods/dwf_ancient_lineages) | играбелен, ждёт теста в игре |
+| Империя героев (Хребет Сотека): Подворья | [`mods/hero_empire_sotek`](mods/hero_empire_sotek) | прототип, ждёт теста в игре ([описание](mods/hero_empire_sotek/README.md)) |
+
+Все `.pack` собираются автоматически: **[Releases → latest](../../releases/tag/latest)**.
+
+---
+
+# Древние Родословные Гномов
 
 Механика родословных, как у вампиров, переделанная под гномов. Платить нужно **Клятвенным Золотом**, а качать роды можно **бесконечно**.
 
@@ -28,34 +39,33 @@ GitHub собирает его автоматически при каждом и
 * Мод работает в мультиплеере. ИИ-гномы могут тратить золото на роды (по умолчанию выключено).
 
 Все числа настраиваются в блоке `CONFIG` и таблице `LINEAGES` в
-[`mod/script/campaign/mod/dwf_ancient_lineages.lua`](mod/script/campaign/mod/dwf_ancient_lineages.lua).
+[`mods/dwf_ancient_lineages/script/campaign/mod/dwf_ancient_lineages.lua`](mods/dwf_ancient_lineages/script/campaign/mod/dwf_ancient_lineages.lua).
 
 ## Структура репозитория
 
 ```
-mod/                         исходники мода (повторяют структуру .pack)
-  script/campaign/mod/…lua   логика
-  db/<таблица>/…tsv          таблицы БД в формате TSV, как в RPFM
-  text/db/…loc.tsv           русский текст
-  ui/…                       иконки
+mods/<мод>/                  исходники мода (повторяют структуру .pack)
+  script/…lua                логика
+  db/<таблица>/…tsv          таблицы БД в формате RPFM TSV (вторая строка: #таблица;версия;путь)
+  text/db/…loc.tsv           текст
+  _gen/                      генераторы данных (в пак не попадают)
+tests/test_<мод>.lua         тесты логики с заглушками игрового API
 tools/
-  build_pack.py              сборка dist/*.pack (Python 3, без зависимостей)
-  packlib.py                 запись и чтение форматов PFH5 / DB / LOC (по спецификации RPFM)
-  schema_wh3_subset.json     схемы используемых таблиц WH3 (из rpfm-schemas)
-  test_mod.lua               тесты логики скрипта с заглушками игрового API
-.github/workflows/build.yml  CI: проверка Lua → тесты → сборка → релиз
+  build_pack.py              сборка dist/*.pack для всех модов
+  packlib.py                 запись и чтение PFH5 / DB / LOC
+  schema_wh3.json            схемы таблиц WH3 (все версии), из rpfm-schemas
+  extract_schema.py          обновление schema_wh3.json
 ```
 
-Собрать локально:
+Формат проверен на настоящих модах: два рабочих пака (305 таблиц и 32 файла локализации) пересобираются
+нашим кодом **байт в байт**.
 
 ```bash
 python3 tools/build_pack.py
 ```
 
-Прогнать тесты:
-
 ```bash
-lua5.1 tools/test_mod.lua
+for t in tests/test_*.lua; do lua5.1 "$t"; done
 ```
 
 ## Что проверено, а что нет

@@ -1,4 +1,4 @@
-name: Build mod pack
+name: Build mod packs
 
 on:
   push:
@@ -20,18 +20,23 @@ jobs:
         run: sudo apt-get update -qq && sudo apt-get install -y -qq lua5.1
 
       - name: Lua syntax check
-        run: luac5.1 -p mod/script/campaign/mod/*.lua
+        run: find mods -name '*.lua' -print0 | xargs -0 -n1 luac5.1 -p
+
+      - name: Generated data is up to date
+        run: |
+          for g in mods/*/_gen/gen_data.py; do python3 "$g"; done
+          git diff --exit-code -- mods
 
       - name: Lua logic tests (stubbed game API)
-        run: lua5.1 tools/test_mod.lua
+        run: for t in tests/test_*.lua; do echo "== $t"; lua5.1 "$t"; done
 
-      - name: Build .pack
+      - name: Build packs
         run: python3 tools/build_pack.py
 
       - uses: actions/upload-artifact@v4
         with:
-          name: dwf_ancient_lineages
-          path: dist/dwf_ancient_lineages.pack
+          name: packs
+          path: dist/*.pack
 
       - name: Publish "latest" release
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -39,13 +44,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release delete latest --yes --cleanup-tag 2>/dev/null || true
-          gh release create latest dist/dwf_ancient_lineages.pack \
+          gh release create latest dist/*.pack \
             --title "Последняя сборка (main)" \
-            --notes "Автосборка из коммита ${GITHUB_SHA::7}. Положите dwf_ancient_lineages.pack в папку data игры и включите в лаунчере." \
+            --notes "Автосборка из коммита ${GITHUB_SHA::7}. Нужный .pack положите в папку data игры и включите в лаунчере." \
             --target "$GITHUB_SHA" --prerelease
 
       - name: Publish tagged release
         if: startsWith(github.ref, 'refs/tags/v')
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" dist/dwf_ancient_lineages.pack --title "$GITHUB_REF_NAME" --generate-notes
+        run: gh release create "$GITHUB_REF_NAME" dist/*.pack --title "$GITHUB_REF_NAME" --generate-notes
