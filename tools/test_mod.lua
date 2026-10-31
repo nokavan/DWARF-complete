@@ -152,7 +152,7 @@ check(launched[#launched].key == "dwf_al_dilemma_page_1", "page re-opened after 
 -- buy Grimnir again (level 2, cost 90)
 choose("dwf_al_dilemma_page_1", 0)
 check(api.get_level("wh_main_dwf_dwarfs", "grimnir") == 2 and gold.value == 830, "grimnir level 2 for 90")
-check(applied["dwf_al_bundle_grimnir"]["wh_main_effect_force_stat_charge_bonus"] == 4, "charge +4 at level 2")
+check(applied["dwf_al_bundle_grimnir"]["wh_main_effect_force_stat_charge_bonus_pct"] == 6, "charge +6% at level 2")
 
 -- navigation
 choose("dwf_al_dilemma_page_1", 3)

@@ -70,7 +70,7 @@ local LINEAGES = {
         bundle = "dwf_al_bundle_grimnir",
         effects = {
             { key = "wh_main_effect_force_stat_melee_attack", scope = "faction_to_force_own", per_level = 1, mode = "linear" },
-            { key = "wh_main_effect_force_stat_charge_bonus", scope = "faction_to_force_own", per_level = 2, mode = "linear" },
+            { key = "wh_main_effect_force_stat_charge_bonus_pct", scope = "faction_to_force_own", per_level = 3, mode = "linear" },
         },
     },
     {
@@ -78,7 +78,7 @@ local LINEAGES = {
         bundle = "dwf_al_bundle_valaya",
         effects = {
             { key = "wh_main_effect_force_stat_melee_defence", scope = "faction_to_force_own",    per_level = 1, mode = "linear" },
-            { key = "wh_main_effect_public_order_global",      scope = "faction_to_province_own", per_level = 1, mode = "soft", cap = 30 },
+            { key = "wh_main_effect_public_order_faction",     scope = "faction_to_province_own", per_level = 1, mode = "soft", cap = 30 },
         },
     },
     {
@@ -86,7 +86,7 @@ local LINEAGES = {
         bundle = "dwf_al_bundle_grungni",
         effects = {
             { key = "wh_main_effect_economy_gdp_mod_all",          scope = "faction_to_region_own", per_level = 3,  mode = "linear" },
-            { key = "wh_main_effect_building_construction_cost_mod", scope = "faction_to_region_own", per_level = -2, mode = "soft", cap = -60 },
+            { key = "wh_main_effect_building_construction_cost_mod_all", scope = "faction_to_region_own", per_level = -2, mode = "soft", cap = -60 },
         },
     },
     {
