@@ -21,6 +21,8 @@
 local CONFIG = {
     factions = { ["wh2_main_dwf_spine_of_sotek_dwarfs"] = true },
     slot_set = "he_slot_set_podvorye",
+    feature_bundle = "he_bundle_podvorye_feature", -- открывает Мастер-инженерам действие «Основать подворье»
+    dilemma_fallback = true,    -- запасной путь через дилемму (выключить, если штатное действие работает)
     dilemma = "he_dilemma_found_podvorye",
     found_cost = 1500,          -- должно совпадать с текстом дилеммы (_gen/gen_data.py)
     max_podvorye = 6,           -- лимит подворий (позже будет расти от столицы)
@@ -117,6 +119,28 @@ local function found(faction, region)
     return true
 end
 
+-- Подворье создано штатным действием героя (движок уже добавил слоты).
+local function on_native_created(faction, region)
+    local fk, rk = faction:name(), region:name()
+    local list = get_list(fk)
+    if in_list(list, rk) then return end
+    if not is_friend(region:owning_faction(), faction) then
+        cm:remove_faction_foreign_slots_from_region(faction:command_queue_index(), region:cqi())
+        log(fk .. ": подворье в " .. rk .. " не удержалось — регион не союзный")
+        return
+    end
+    if #list >= CONFIG.max_podvorye then
+        cm:remove_faction_foreign_slots_from_region(faction:command_queue_index(), region:cqi())
+        log(fk .. ": лимит подворий (" .. CONFIG.max_podvorye .. ") — новое в " .. rk .. " убрано")
+        return
+    end
+    list[#list + 1] = rk
+    set_list(fk, list)
+    cm:set_saved_value(hostile_key(fk, rk), 0)
+    core:trigger_event("ScriptEventHePodvoryeFounded", faction, region)
+    log(fk .. ": подворье основано героем в " .. rk)
+end
+
 local function remove(faction, region_key, region, reason)
     local fk = faction:name()
     if region and not region:is_null_interface() and has_podvorye(region, fk) then
@@ -195,6 +219,7 @@ end
 
 local function offer(faction)
     local fk = faction:name()
+    if faction:is_human() and not CONFIG.dilemma_fallback then return end
     local char, region = find_candidate(faction)
     if not char then return end
 
@@ -257,7 +282,18 @@ cm:add_first_tick_callback(function()
 
     core:add_listener("he_podvorye_created", "ForeignSlotManagerCreatedEvent",
         function(context) return is_our_faction(context:requesting_faction()) end,
-        function(context) log("подворье появилось в " .. context:region():name()) end, true)
+        function(context)
+            local ok, err = pcall(on_native_created, context:requesting_faction(), context:region())
+            if not ok then log("ОШИБКА при создании подворья: " .. tostring(err)) end
+        end, true)
+
+    -- набор эффектов, открывающий действие героя (бессрочно, повторное применение безопасно)
+    for fk in pairs(CONFIG.factions) do
+        local f = cm:get_faction(fk)
+        if f and not f:is_null_interface() and not f:is_dead() then
+            cm:apply_effect_bundle(CONFIG.feature_bundle, fk, 0)
+        end
+    end
 
     log("загружено")
 end)
@@ -268,5 +304,6 @@ he_podvorye = {
     found = found,
     remove = remove,
     maintain = maintain,
+    on_native_created = on_native_created,
     get_list = get_list,
 }

@@ -1,4 +1,4 @@
-generate	key	localised_description	localised_title	ui_image	prioritized	event_category	sound_popup_override	sound_click_override
-#dilemmas_tables;5;db/dilemmas_tables/dwf_ancient_lineages
-false	dwf_al_dilemma_page_1				true			
-false	dwf_al_dilemma_page_2				true			
+generate	key	localised_description	localised_title	ui_image	prioritized	event_category	sound_popup_override	sound_click_override	override_icon	is_large_dilemma
+#dilemmas_tables;3;db/dilemmas_tables/dwf_ancient_lineages
+false	dwf_al_dilemma_page_1				true					false
+false	dwf_al_dilemma_page_2				true					false

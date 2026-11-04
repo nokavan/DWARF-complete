@@ -17,8 +17,8 @@ SLOT_SET = "he_slot_set_podvorye"
 CHAIN_SET = "he_pod_chain_set"
 AVAIL_SET = "he_bas_sotek"
 SLOT_COUNT = 5
-# Valid slot_set_types key known from a working pack. Covens' own type is not known yet.
-SLOT_SET_TYPE = "UNDERDEEP"
+# slot_set_types (vanilla): VAMPIRE_COVEN is the type of Neferata's covens, which also live in allied regions.
+SLOT_SET_TYPE = "VAMPIRE_COVEN"
 ALLIED = "CovenRegionOwnerAllied"   # vanilla context expression (used by covens)
 
 LEVEL_COST = [600, 1200, 2000]
@@ -104,6 +104,10 @@ CHAINS = [
 ]
 
 DILEMMA = "he_dilemma_found_podvorye"
+ACTION = "he_agent_action_engineer_hinder_settlement_found_podvorye"
+ACTION_RESULT = "he_agent_action_hinder_settlement_success_found_podvorye"
+ENABLE_EFFECT = "he_effect_agent_action_enable_engineer_found_podvorye"
+FEATURE_BUNDLE = "he_bundle_podvorye_feature"
 FOUND_COST = 1500
 
 
@@ -180,10 +184,50 @@ def main():
     db("building_chain_availability_sets_tables", 0, ["building_chain", "id"], [[chain(c), AVAIL_SET] for c in CHAINS])
 
     # founding dilemma
-    db("dilemmas_tables", 5,
+    db("dilemmas_tables", 3,
        ["generate", "key", "localised_description", "localised_title", "ui_image", "prioritized", "event_category",
-        "sound_popup_override", "sound_click_override"],
-       [["false", DILEMMA, "", "", "", "true", "", "", ""]])
+        "sound_popup_override", "sound_click_override", "override_icon", "is_large_dilemma"],
+       [["false", DILEMMA, "", "", "", "true", "", "", "", "", "false"]])
+
+    # native hero action "Основать подворье" — copied from vanilla wh3_dlc29 "establish coven" chain
+    db("agent_actions_tables", 12,
+       ["ability", "agent", "attribute", "cannot_fail", "critical_failure", "critical_success", "failure", "opportune_failure",
+        "success", "localised_action_name", "localised_action_description", "unique_id", "target_attribute",
+        "critical_success_proportion_modifier", "opportune_failure_proportion_modifier", "critical_failure_proportion_modifier",
+        "chance_of_success", "voiceover", "icon_path", "show_action_info_in_ui", "subculture", "succeed_always_override", "order"],
+       [["hinder_settlement", "engineer", "authority"] + [ACTION_RESULT] * 6 +
+        ["", "", ACTION, "authority", "0.0", "0.0", "0.0", 100, "vo_campaign_action_enemy_settlement",
+         "ui/campaign ui/effect_bundles/he_podvorye.png", "true", "", "false", 0]])
+    db("action_results_tables", 1,
+       ["actor_effect_bundle", "key", "target_effect_bundle", "actor_effect_bundle_turns", "target_effect_bundle_turns"],
+       [["wh_main_bundle_dummy_character", ACTION_RESULT, "wh_main_bundle_agent_action_spy_hinder_settlement_success_target", 1, 1]])
+    db("action_results_additional_outcomes_tables", 6,
+       ["outcome", "action_result_key", "value", "effect_record", "effect_scope_record", "key", "FIXME",
+        "opportune_failure_weighting", "affects_target", "advancement_stage", "create_foreign_slot_set", "sort_order"],
+       [["establish_foreign_slots_province_capital_only", ACTION_RESULT, "1.0", "", "", ACTION_RESULT, "true", 0, "true",
+         "start_round_completed", SLOT_SET, 0]])
+    db("effects_tables", 0, ["effect", "icon", "priority", "icon_negative", "category", "is_positive_value_good"],
+       [[ENABLE_EFFECT, "agent.png", 1, "agent.png", "campaign", "true"]])
+    db("effect_bonus_value_agent_action_record_junctions_tables", 0, ["bonus_value_id", "effect", "agent_action_record"],
+       [["active", ENABLE_EFFECT, ACTION]])
+    db("effect_bundles_tables", 4,
+       ["key", "localised_description", "localised_title", "bundle_target", "priority", "ui_icon", "is_global_effect",
+        "show_in_3d_space", "owner_only"],
+       [[FEATURE_BUNDLE, "", "", "faction", 1, "he_podvorye.png", "false", "false", "true"]])
+    db("effect_bundles_to_effects_junctions_tables", 3,
+       ["effect_bundle_key", "effect_key", "effect_scope", "value", "advancement_stage"],
+       [[FEATURE_BUNDLE, ENABLE_EFFECT, "faction_to_character_own", "1.0", "start_turn_completed"]])
+    loc += [
+        ("agent_actions_localised_action_name_" + ACTION, "Основать подворье"),
+        ("agent_actions_localised_action_description_" + ACTION,
+         "[[col:yellow]]Основывает подворье Хребта Сотека в столице провинции союзника или вассала.[[/col]]\\n"
+         "Подворье усиливает город союзника и даёт нам доход, опыт героев и узел сети троп. "
+         "В регионах, которые не принадлежат союзнику, подворье не удержится."),
+        ("effects_description_" + ENABLE_EFFECT, "Мастер-инженеры могут основывать [[col:yellow]]подворья[[/col]] в городах союзников"),
+        ("effect_bundles_localised_title_" + FEATURE_BUNDLE, "Подворья Хребта Сотека"),
+        ("effect_bundles_localised_description_" + FEATURE_BUNDLE,
+         "Мастер-инженеры основывают подворья — подгорода в столицах провинций союзников и вассалов."),
+    ]
     db("cdir_events_dilemma_choice_details_tables", 4, ["choice_key", "dilemma_key", "audio_event_hover", "audio_choice_vo"],
        [["FIRST", DILEMMA, "", ""], ["SECOND", DILEMMA, "", ""]])
     loc += [

@@ -30,6 +30,19 @@ jobs:
       - name: Lua logic tests (stubbed game API)
         run: for t in tests/test_*.lua; do echo "== $t"; lua5.1 "$t"; done
 
+      - name: Audit mods against original game data (private release "game-data")
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view game-data >/dev/null 2>&1; then echo "no game-data release, audit skipped"; exit 0; fi
+          pip install -q zstandard
+          mkdir -p /tmp/game && gh release download game-data -D /tmp/game --clobber
+          for z in /tmp/game/*.zip; do [ -e "$z" ] && unzip -oq "$z" -d /tmp/game; done
+          DB=$(find /tmp/game -name db.pack | head -1)
+          [ -n "$DB" ] || { echo "db.pack not found in game-data release"; exit 1; }
+          curl -sSLf -o /tmp/schema_wh3.ron https://raw.githubusercontent.com/Frodo45127/rpfm-schemas/master/schema_wh3.ron
+          python3 tools/audit_mods.py "$DB" /tmp/schema_wh3.ron
+
       - name: Build packs
         run: python3 tools/build_pack.py
 

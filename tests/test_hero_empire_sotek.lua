@@ -89,6 +89,8 @@ _G.cm = {
     end,
     make_region_visible_in_shroud = function() end,
     apply_dilemma_diplomatic_bonus = function(_, a, b, v) log_calls.diplo[#log_calls.diplo + 1] = b end,
+    get_faction = function(_, k) return factions[k] end,
+    apply_effect_bundle = function(_, key, fk, turns) log_calls.bundles = log_calls.bundles or {}; log_calls.bundles[#log_calls.bundles + 1] = key .. "|" .. fk .. "|" .. turns end,
     trigger_dilemma_with_targets = function(_, fcqi, key, ...) log_calls.dilemmas[#log_calls.dilemmas + 1] = { key = key, args = { ... } } end,
 }
 
@@ -198,6 +200,34 @@ ai.chars = { mkagent("r_ally2", true) }
 gold = 10000; rnd = 1
 turn = 39; turn_start(ai)
 check(slots["r_ally2"] == ME, "AI founds podvorye on its own")
+
+-- набор эффектов, открывающий действие героя, применён бессрочно
+check(log_calls.bundles and log_calls.bundles[1] == "he_bundle_podvorye_feature|wh2_main_dwf_spine_of_sotek_dwarfs|0", "feature bundle applied permanently")
+
+-- подворье, созданное штатным действием героя
+local function native(region_key)
+    slots[region_key] = ME
+    fire("ForeignSlotManagerCreatedEvent", { requesting_faction = function() return me end, region = function() return regions[region_key] end })
+end
+for _, rk in ipairs(api.get_list(ME)) do api.remove(me, rk, regions[rk], "test reset") end
+mkregion("n_ally", "ally_faction")
+native("n_ally")
+check(api.get_list(ME)[1] == "n_ally" and slots["n_ally"] == ME, "native podvorye registered")
+mkregion("n_enemy", "enemy_faction")
+native("n_enemy")
+check(slots["n_enemy"] == nil and #api.get_list(ME) == 1, "native podvorye in non-allied region removed")
+for i = 1, 5 do mkregion("nl" .. i, "ally_faction"); native("nl" .. i) end
+mkregion("nl_over", "ally_faction"); native("nl_over")
+check(#api.get_list(ME) == 6 and slots["nl_over"] == nil, "native podvorye over limit removed")
+
+-- дилемма-запасной путь выключается настройкой
+api.config.dilemma_fallback = false
+for _, rk in ipairs(api.get_list(ME)) do api.remove(me, rk, regions[rk], "test reset") end
+me.chars = { mkagent("r_ally2", true) }
+slots["r_ally2"] = nil
+local n = #log_calls.dilemmas
+turn = 60; turn_start(me)
+check(#log_calls.dilemmas == n, "no dilemma when fallback disabled")
 
 print(string.format("%d passed, %d failed", passed, failures))
 if failures > 0 then os.exit(1) end

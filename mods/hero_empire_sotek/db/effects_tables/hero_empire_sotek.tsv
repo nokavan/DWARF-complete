@@ -1,0 +1,3 @@
+effect	icon	priority	icon_negative	category	is_positive_value_good
+#effects_tables;0;db/effects_tables/hero_empire_sotek
+he_effect_agent_action_enable_engineer_found_podvorye	agent.png	1	agent.png	campaign	true
