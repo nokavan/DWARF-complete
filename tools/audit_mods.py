@@ -19,7 +19,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import packlib  # noqa: E402
-from game_data import Pack, load_schema  # noqa: E402
+from game_data import Pack, load_meta, load_schema  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -27,6 +27,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def main():
     pack = Pack(sys.argv[1])
     schema = load_schema(sys.argv[2])
+    meta = load_meta(sys.argv[2])
     versions, cache = {}, {}
 
     def header_version(data):
@@ -114,6 +115,35 @@ def main():
         for r in mod_rows.get("agent_actions_tables", []):
             if r["agent"] not in agents:
                 errors.append("%s: agent action %s: unknown agent type %s" % (mod, r["unique_id"], r["agent"]))
+        # every reference field must point to an existing game or mod record
+        mod_versions = {}
+        for f in glob.glob(os.path.join(mod_dir, "db", "*", "*.tsv")):
+            t, v, _, _, _ = packlib.read_tsv(f)
+            mod_versions[t] = v
+        ref_index = {}
+
+        def ref_values(table, field):
+            if (table, field) not in ref_index:
+                vals = {r[field] for r in mod_rows.get(table, []) if field in r}
+                if table in db:
+                    vals |= {r[field] for r in game_rows(table) if field in r}
+                ref_index[(table, field)] = vals
+            return ref_index[(table, field)]
+
+        broken = 0
+        for t, rows in mod_rows.items():
+            for name, _, _, ref in meta[t][str(mod_versions[t])]["fields"]:
+                if not ref or ref[0] not in db and ref[0] not in mod_rows:
+                    continue
+                known = ref_values(*ref)
+                for r in rows:
+                    v = r.get(name, "")
+                    if v and v not in known:
+                        broken += 1
+                        if broken <= 40:
+                            errors.append("%s: %s.%s = %s -> no such %s.%s" % (mod, t, name, v, ref[0], ref[1]))
+        if broken > 40:
+            errors.append("%s: ... %d broken references in total" % (mod, broken))
         print("%-24s %3d tables checked" % (mod, len(mod_rows)))
 
     for w in sorted(set(warnings)):

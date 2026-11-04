@@ -138,6 +138,41 @@ def load_schema(ron_path):
     return out
 
 
+def load_meta(ron_path):
+    """Per table+version: fields (name, type, is_key, reference(table, field) or None) and localised fields."""
+    cache = ron_path + ".meta.pkl"
+    if os.path.exists(cache) and os.path.getmtime(cache) >= os.path.getmtime(ron_path):
+        with open(cache, "rb") as f:
+            return pickle.load(f)
+    s = open(ron_path, encoding="utf-8").read()
+    meta = {}
+    for m in re.finditer(r'\n        "([a-z0-9_]+_tables)": \[', s):
+        t = m.group(1)
+        if t in meta:
+            continue
+        j = m.end() - 1
+        depth = 0
+        for k in range(j, len(s)):
+            if s[k] == "[":
+                depth += 1
+            elif s[k] == "]":
+                depth -= 1
+                if depth == 0:
+                    break
+        defs = {}
+        for dm in re.finditer(r"\(\s*version:\s*(\d+),\s*fields:\s*\[(.*?)\],\s*localised_fields:\s*\[(.*?)\]", s[j:k], re.S):
+            fields = []
+            for fm in re.finditer(r'\(\s*name:\s*"([^"]+)",\s*field_type:\s*(\w+),\s*is_key:\s*(\w+),.*?'
+                                  r'is_reference:\s*(None|Some\(\("([^"]+)",\s*"([^"]+)"\)\))', dm.group(2), re.S):
+                ref = (fm.group(5) + "_tables", fm.group(6)) if fm.group(5) else None
+                fields.append((fm.group(1), fm.group(2), fm.group(3) == "true", ref))
+            defs.setdefault(dm.group(1), {"fields": fields, "loc": re.findall(r'name:\s*"([^"]+)"', dm.group(3))})
+        meta[t] = defs
+    with open(cache, "wb") as f:
+        pickle.dump(meta, f)
+    return meta
+
+
 def decode_table(pack, entry, schema):
     table = entry[0].split("/")[1]
     data = pack.read(entry)

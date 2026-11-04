@@ -1,0 +1,10 @@
+base_battlefield_building	culture	prefab_path	settlement_gun_type	survival_gun_type	settlement_construction_delay	settlement_dismantle_delay	survival_construction_delay	survival_dismantle_delay
+#toggle_system_building_variants_tables;2;db/toggle_system_building_variants_tables/!he_culture
+blk_ksl_tower_30m_01	he_hero_empire	prefabs\dwf_toggle_tower_01.bmd	wh3_main_dwf_placement_tower_1_bullet	wh3_survival_tower_dwf_bullet	90.0	45.0	30.0	30.0
+blk_ksl_tower_30m_02	he_hero_empire	prefabs\dwf_toggle_tower_02.bmd	wh3_main_dwf_placement_tower_2_bullet_improved	wh3_survival_tower_dwf_bullet_improved	90.0	45.0	30.0	30.0
+blk_ksl_tower_30m_03	he_hero_empire	prefabs\dwf_toggle_tower_03.bmd	wh3_main_dwf_placement_tower_3_cannon_ball	wh3_survival_tower_dwf_cannon_ball	90.0	45.0	30.0	30.0
+blk_ksl_tower_30m_04	he_hero_empire	prefabs\dwf_toggle_tower_04.bmd	wh3_main_dwf_placement_tower_4_fused_beer_keg	wh3_survival_tower_dwf_fused_beer_keg	90.0	45.0	30.0	30.0
+glb_barricade_01	he_hero_empire	prefabs\dwf_barricade_01.bmd			30.0	15.0	30.0	15.0
+glb_barricade_ice_block_01	he_hero_empire	prefabs\dwf_blocker_01.bmd			30.0	15.0	30.0	15.0
+glb_barricade_monument_01	he_hero_empire	prefabs\dwf_monument_ammo.bmd			30.0	15.0	30.0	15.0
+glb_barricade_traps_01	he_hero_empire	prefabs\dwf_trap_01.bmd			30.0	15.0	30.0	15.0

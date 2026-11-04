@@ -1,0 +1,8 @@
+override_faction	override_subculture	source_resource	target_resource
+#resource_ui_overrides_tables;0;db/resource_ui_overrides_tables/!he_culture
+	he_sc_hero_empire	res_bile_trolls	
+	he_sc_hero_empire	res_chaos_trolls	
+	he_sc_hero_empire	res_gold	res_gold_idols
+	he_sc_hero_empire	res_river_trolls	
+	he_sc_hero_empire	res_savage	
+	he_sc_hero_empire	res_stone_trolls	

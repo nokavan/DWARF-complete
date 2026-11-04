@@ -1,0 +1,3 @@
+can_make_confederations	can_make_vassals	subculture
+#diplomatic_action_subculture_restrictions_tables;1;db/diplomatic_action_subculture_restrictions_tables/!he_culture
+true	true	he_sc_hero_empire

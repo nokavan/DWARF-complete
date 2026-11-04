@@ -1,0 +1,3 @@
+campaign_key	faction_key	culture	subculture	key	colour_r	colour_g	colour_b
+#technology_node_sets_tables;3;db/technology_node_sets_tables/!he_culture
+		he_hero_empire		dwf_mil_he	255	182	47
