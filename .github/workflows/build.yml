@@ -45,6 +45,12 @@ jobs:
           [ -n "$DB" ] || { echo "db.pack not found in game-data release"; exit 1; }
           curl -sSLf -o /tmp/schema_wh3.ron https://raw.githubusercontent.com/Frodo45127/rpfm-schemas/master/schema_wh3.ron
           python3 tools/audit_mods.py "$DB" /tmp/schema_wh3.ron
+          SCRIPTS=$(find /tmp/game -name data_script.pack | head -1)
+          if [ -n "$SCRIPTS" ]; then
+            # patched CA scripts must still match the current vanilla files
+            python3 mods/hero_empire_sotek/_gen/gen_overrides.py --scripts "$SCRIPTS"
+            git diff --exit-code -- mods/hero_empire_sotek/script
+          fi
 
       - name: Build packs
         run: python3 tools/build_pack.py

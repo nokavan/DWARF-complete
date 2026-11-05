@@ -19,7 +19,7 @@ ALLOW_METHODS = {"add_choice_payload", "add_effect", "set_duration", "effect_bun
 def main():
     api = json.load(open(os.path.join(ROOT, "tools", "wh3_api_names.json"), encoding="utf-8"))
     cm, core, events = set(api["cm"]), set(api["core"]), set(api["events"])
-    methods, ui = set(api["methods"]), set(api["ui_methods"])
+    methods, ui = set(api["methods"]) | set(api.get("lib_methods", [])), set(api["ui_methods"])
     errors = 0
     for f in sorted(glob.glob(os.path.join(ROOT, "mods", "*", "script", "**", "*.lua"), recursive=True)):
         src = open(f, encoding="utf-8").read()

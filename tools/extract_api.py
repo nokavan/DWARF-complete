@@ -3,7 +3,10 @@
 Builds tools/wh3_api_names.json from CA's official scripting documentation, which ships inside the
 game's data.pack (documentation/script/...). Only NAMES are stored (functions, events, methods).
 
-  python3 tools/extract_api.py DATA_PACK
+  python3 tools/extract_api.py DATA_PACK [DATA_SCRIPT_PACK]
+
+With DATA_SCRIPT_PACK, functions defined in CA's script library (script/_lib/**.lua, e.g. weighted_list)
+are added as "lib_methods".
 """
 import html
 import json
@@ -39,6 +42,14 @@ def main():
         "methods": sorted(set(re.findall(r"\b([a-z_][a-z0-9_]*)\b", get("scripting_doc.html", "campaign/model_hierarchy.html") + cm_doc))),
         "ui_methods": sorted(set(re.findall(r"uicomponent:([A-Za-z]+)\s*\(", get("campaign/uicomponent.html")))),
     }
+    if len(sys.argv) > 2:
+        sp = Pack(sys.argv[2])
+        lib = set()
+        for e in sp.entries:
+            if e[0].startswith("script/_lib/") and e[0].endswith(".lua"):
+                src = sp.read(e).decode("utf-8", "replace")
+                lib |= set(re.findall(r"function\s+[A-Za-z_][\w.]*[:.]([A-Za-z_]\w*)\s*\(", src))
+        api["lib_methods"] = sorted(lib)
     with open(os.path.join(ROOT, "tools", "wh3_api_names.json"), "w", encoding="utf-8") as f:
         json.dump(api, f, indent=0)
     print({k: len(v) for k, v in api.items()})
