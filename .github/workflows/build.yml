@@ -27,6 +27,9 @@ jobs:
           for g in mods/*/_gen/gen_data.py; do python3 "$g"; done
           git diff --exit-code -- mods
 
+      - name: Game API check (names from CA's official scripting docs)
+        run: python3 tools/check_api.py
+
       - name: Lua logic tests (stubbed game API)
         run: for t in tests/test_*.lua; do echo "== $t"; lua5.1 "$t"; done
 

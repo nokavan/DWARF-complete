@@ -12,7 +12,7 @@
 
     Открытие меню — кнопка в интерфейсе кампании (или авто-напоминание в начале хода).
     Выбор делается через динамическую дилемму: в ней видно цену и бонусы следующего уровня.
-    Совместимо с мультиплеером (клик проходит через UITriggerScriptEvent).
+    Совместимо с мультиплеером (клик проходит через CampaignUI.TriggerCampaignScriptEvent → событие UITrigger).
 ]]
 
 local MOD = "dwf_al"
@@ -394,6 +394,7 @@ local function create_button()
                     local btn = UIComponent(comp)
                     btn:SetImagePath(BUTTON_ICON)
                     btn:SetVisible(true)
+                    pcall(function() btn:AddScriptEventReporter() end) -- needed for ComponentMouseOn
                     button_ok = true
                     update_button()
                     log("Кнопка создана в " .. table.concat(path, "/") .. " (" .. tpl .. ")")
@@ -412,6 +413,7 @@ local function create_button()
             btn:MoveTo(sw - 420, 8)
             btn:SetImagePath(BUTTON_ICON)
             btn:SetVisible(true)
+            pcall(function() btn:AddScriptEventReporter() end)
             button_ok = true
             update_button()
             log("Кнопка создана на корне интерфейса (" .. tpl .. ")")
@@ -478,7 +480,8 @@ local function init()
     end
 
     -- синхронизированное событие (MP-safe): открываем меню у нужной фракции
-    core:add_listener(MOD .. "_ui_trigger", "UITriggerScriptEvent",
+    -- CampaignUI.TriggerCampaignScriptEvent fires the "UITrigger" event on all clients (CA docs, scripting_doc)
+    core:add_listener(MOD .. "_ui_trigger", "UITrigger",
         function(context) return context:trigger() == UI_EVENT_OPEN end,
         function(context)
             local f = cm:model():faction_for_command_queue_index(context:faction_cqi())

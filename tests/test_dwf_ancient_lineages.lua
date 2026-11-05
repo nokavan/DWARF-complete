@@ -130,7 +130,7 @@ check(api.cost_for(10) == 360, "lvl10->11 cost 360")
 
 -- open menu with no gold
 gold.value = 50
-fire("UITriggerScriptEvent", { trigger = function() return "dwf_al_open" end, faction_cqi = function() return 7 end })
+fire("UITrigger", { trigger = function() return "dwf_al_open" end, faction_cqi = function() return 7 end })
 check(#launched == 1 and launched[1].key == "dwf_al_dilemma_page_1", "page 1 launched on button event")
 check(launched[1].payloads.FIRST.cost == nil, "unaffordable choice has no cost payload")
 check(launched[1].payloads.FIRST.bundle.key == "dwf_al_bundle_locked", "unaffordable choice shows locked bundle")
@@ -140,7 +140,7 @@ check(gold.value == 50, "gold untouched when unaffordable")
 
 -- buy Grimnir 1
 gold.value = 1000
-fire("UITriggerScriptEvent", { trigger = function() return "dwf_al_open" end, faction_cqi = function() return 7 end })
+fire("UITrigger", { trigger = function() return "dwf_al_open" end, faction_cqi = function() return 7 end })
 local p = launched[#launched].payloads.FIRST
 check(p.cost == 80 and p.res == "dwf_oathgold" and p.factor == "dwf_al_lineages", "payload charges 80 oathgold via own factor")
 check(p.bundle.key == "dwf_al_bundle_grimnir" and p.bundle.effects["wh_main_effect_force_stat_melee_attack"] == 1, "payload previews level 1 bundle")
