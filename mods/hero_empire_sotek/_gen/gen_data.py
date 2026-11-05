@@ -123,8 +123,8 @@ def tsv(rel, table, version, header, rows):
             f.write("\t".join(str(c) for c in r) + "\n")
 
 
-def db(table, version, header, rows):
-    tsv("db/%s/%s.tsv" % (table, NAME), table, version, header, rows)
+def db(table, version, header, rows, name=NAME):
+    tsv("db/%s/%s.tsv" % (table, name), table, version, header, rows)
 
 
 def main():
@@ -247,8 +247,91 @@ def main():
         ("cdir_events_dilemma_choice_details_localised_choice_title_%sSECOND" % DILEMMA, "Не сейчас"),
         ("cdir_events_dilemma_choice_details_localised_choice_label_%sSECOND" % DILEMMA, "Предложение повторится не раньше чем через 5 ходов."),
     ]
+    gen_runes(loc)
     tsv("text/db/%s.loc.tsv" % NAME, "Loc", 1, ["key", "text", "tooltip"], [[k, v, "false"] for k, v in loc])
     print("generated: %d effects rows, %d loc rows" % (len(effects), len(loc)))
+
+
+RUNE_DILEMMAS = {"slots": "he_dilemma_runes_slots"}
+RUNE_BUNDLE = "he_bundle_runes"
+RUNE_FACTOR = "he_runes"
+OATHGOLD = "dwf_oathgold"
+CHOICES = ["FIRST", "SECOND", "THIRD", "FOURTH"]
+
+
+def gen_runes(loc):
+    import json
+    import sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import runes_data as R
+
+    dil_rows, choice_rows = [], []
+
+    def dilemma(key, title, desc, choices):
+        dil_rows.append(["false", key, "", "", "", "true", "", "", "", "", "false"])
+        loc.append(("dilemmas_localised_title_" + key, title))
+        loc.append(("dilemmas_localised_description_" + key, desc))
+        for c, (ct, cl) in zip(CHOICES, choices):
+            choice_rows.append([c, key, "", ""])
+            loc.append(("cdir_events_dilemma_choice_details_localised_choice_title_%s%s" % (key, c), ct))
+            loc.append(("cdir_events_dilemma_choice_details_localised_choice_label_%s%s" % (key, c), cl))
+
+    costs = " / ".join(str(c) for c in R.COST)
+    intro = ("Рунные мастера Хребта Сотека высекают руны на снаряжении героя. У каждого героя три рунных места: "
+             "оружие, доспех и талисман.\\n\\nПовторная руна того же вида усиливает её (до %d уровня). Другая руна "
+             "заменяет прежнюю. Три руны одной школы дают бонус комплекта.\\n\\nЦена: %s Клятвенного Золота за уровень."
+             % (R.MAX_LEVEL, costs))
+    sets = "\\n".join("%s: %s" % (R.SCHOOLS[k], ", ".join(t for _, _, t in v)) for k, v in R.SET_BONUS.items())
+    dilemma(RUNE_DILEMMAS["slots"], "Руны героя", intro + "\\n\\nКомплекты (три руны одной школы):\\n" + sets,
+            [(title, "Выбрать руну для места «%s»." % title) for _, title, _ in R.SLOTS] + [("Закрыть", "Вернуться к делам.")])
+    for slot, title, runes in R.SLOTS:
+        key = "he_dilemma_runes_" + slot
+        RUNE_DILEMMAS[slot] = key
+        ch = []
+        for rid, name, school, eff, vals, stat in runes:
+            ch.append(("%s (%s)" % (name, R.SCHOOLS[school]),
+                       "%s: +%s / +%s / +%s по уровням." % (stat, vals[0], vals[1], vals[2])))
+        ch.append(("← Назад", "К выбору рунного места."))
+        dilemma(key, "Руны: %s" % title, intro, ch)
+
+    db("dilemmas_tables", 3, ["generate", "key", "localised_description", "localised_title", "ui_image", "prioritized",
+                              "event_category", "sound_popup_override", "sound_click_override", "override_icon", "is_large_dilemma"],
+       dil_rows, name="he_runes")
+    db("cdir_events_dilemma_choice_details_tables", 4, ["choice_key", "dilemma_key", "audio_event_hover", "audio_choice_vo"],
+       choice_rows, name="he_runes")
+    db("effect_bundles_tables", 4, ["key", "localised_description", "localised_title", "bundle_target", "priority", "ui_icon",
+                                    "is_global_effect", "show_in_3d_space", "owner_only"],
+       [[RUNE_BUNDLE, "", "", "character", 1, "he_runes.png", "false", "false", "true"]], name="he_runes")
+    loc.append(("effect_bundles_localised_title_" + RUNE_BUNDLE, "Руны героя"))
+    loc.append(("effect_bundles_localised_description_" + RUNE_BUNDLE, "Руны, высеченные на снаряжении героя рунными мастерами Хребта Сотека."))
+    db("pooled_resource_factors_tables", 5, ["key", "is_hidden"], [[RUNE_FACTOR, "false"]], name="he_runes")
+    db("pooled_resource_factor_junctions_tables", 3,
+       ["unique_id", "factor", "resource", "minimum", "maximum", "specific_faction_set", "sort_order"],
+       [["he_runes_oathgold", RUNE_FACTOR, OATHGOLD, -1000000, 1000000, "", 98]], name="he_runes")
+    loc.append(("pooled_resource_factors_display_name_positive_" + RUNE_FACTOR, "Руны героев"))
+    loc.append(("pooled_resource_factors_display_name_negative_" + RUNE_FACTOR, "Руны героев"))
+
+    # Lua data module for the script
+    data = {
+        "scope": R.SCOPE, "cost": R.COST, "max_level": R.MAX_LEVEL, "bundle": RUNE_BUNDLE, "factor": RUNE_FACTOR,
+        "resource": OATHGOLD, "dilemmas": RUNE_DILEMMAS,
+        "slots": [{"id": s, "title": t, "runes": [{"id": r[0], "name": r[1], "school": r[2], "effect": r[3], "values": r[4]}
+                                                for r in runes]} for s, t, runes in R.SLOTS],
+        "set_bonus": {k: [{"effect": e, "value": v} for e, v, _ in lst] for k, lst in R.SET_BONUS.items()},
+    }
+
+    def lua(v, ind=""):
+        if isinstance(v, dict):
+            return "{\n" + "".join("%s    %s = %s,\n" % (ind, k, lua(x, ind + "    ")) for k, x in v.items()) + ind + "}"
+        if isinstance(v, list):
+            return "{ " + ", ".join(lua(x, ind) for x in v) + " }"
+        if isinstance(v, str):
+            return json.dumps(v, ensure_ascii=False)
+        return str(v)
+    path = os.path.join(MOD, "script", "campaign", "mod", "he_runes_data.lua")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("-- GENERATED by _gen/gen_data.py from _gen/runes_data.py - edit the generator, not this file.\n")
+        f.write("HE_RUNES_DATA = " + lua(data) + "\n")
 
 
 if __name__ == "__main__":

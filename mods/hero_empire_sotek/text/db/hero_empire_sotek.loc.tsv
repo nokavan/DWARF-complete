@@ -58,3 +58,47 @@ cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_found_podvo
 cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_found_podvoryeFIRST	Заплатить 1500 золота и открыть 5 слотов подворья.	false
 cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_found_podvoryeSECOND	Не сейчас	false
 cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_found_podvoryeSECOND	Предложение повторится не раньше чем через 5 ходов.	false
+dilemmas_localised_title_he_dilemma_runes_slots	Руны героя	false
+dilemmas_localised_description_he_dilemma_runes_slots	Рунные мастера Хребта Сотека высекают руны на снаряжении героя. У каждого героя три рунных места: оружие, доспех и талисман.\n\nПовторная руна того же вида усиливает её (до 3 уровня). Другая руна заменяет прежнюю. Три руны одной школы дают бонус комплекта.\n\nЦена: 60 / 120 / 200 Клятвенного Золота за уровень.\n\nКомплекты (три руны одной школы):\nНатиск: Натиск +20, Бонус против больших +12\nСтойкость: Здоровье +10%, Сопротивление стрелковому урону +15%\nМастерство: Бронебойный урон +50, Сопротивление огню +20%	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_slotsFIRST	Оружие	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_slotsFIRST	Выбрать руну для места «Оружие».	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_slotsSECOND	Доспех	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_slotsSECOND	Выбрать руну для места «Доспех».	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_slotsTHIRD	Талисман	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_slotsTHIRD	Выбрать руну для места «Талисман».	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_slotsFOURTH	Закрыть	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_slotsFOURTH	Вернуться к делам.	false
+dilemmas_localised_title_he_dilemma_runes_weapon	Руны: Оружие	false
+dilemmas_localised_description_he_dilemma_runes_weapon	Рунные мастера Хребта Сотека высекают руны на снаряжении героя. У каждого героя три рунных места: оружие, доспех и талисман.\n\nПовторная руна того же вида усиливает её (до 3 уровня). Другая руна заменяет прежнюю. Три руны одной школы дают бонус комплекта.\n\nЦена: 60 / 120 / 200 Клятвенного Золота за уровень.	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_weaponFIRST	Руна Ярости (Натиск)	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_weaponFIRST	Атака в ближнем бою: +7 / +10 / +14 по уровням.	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_weaponSECOND	Руна Парирования (Стойкость)	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_weaponSECOND	Защита в ближнем бою: +6 / +9 / +12 по уровням.	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_weaponTHIRD	Руна Мощи (Мастерство)	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_weaponTHIRD	Сила оружия: +10 / +20 / +30 по уровням.	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_weaponFOURTH	← Назад	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_weaponFOURTH	К выбору рунного места.	false
+dilemmas_localised_title_he_dilemma_runes_armour	Руны: Доспех	false
+dilemmas_localised_description_he_dilemma_runes_armour	Рунные мастера Хребта Сотека высекают руны на снаряжении героя. У каждого героя три рунных места: оружие, доспех и талисман.\n\nПовторная руна того же вида усиливает её (до 3 уровня). Другая руна заменяет прежнюю. Три руны одной школы дают бонус комплекта.\n\nЦена: 60 / 120 / 200 Клятвенного Золота за уровень.	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_armourFIRST	Руна Стремительности (Натиск)	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_armourFIRST	Скорость: +10 / +15 / +20 по уровням.	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_armourSECOND	Руна Камня (Стойкость)	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_armourSECOND	Броня: +15 / +20 / +25 по уровням.	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_armourTHIRD	Руна Сопротивления (Мастерство)	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_armourTHIRD	Сопротивление физическому урону: +10 / +15 / +20 по уровням.	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_armourFOURTH	← Назад	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_armourFOURTH	К выбору рунного места.	false
+dilemmas_localised_title_he_dilemma_runes_talisman	Руны: Талисман	false
+dilemmas_localised_description_he_dilemma_runes_talisman	Рунные мастера Хребта Сотека высекают руны на снаряжении героя. У каждого героя три рунных места: оружие, доспех и талисман.\n\nПовторная руна того же вида усиливает её (до 3 уровня). Другая руна заменяет прежнюю. Три руны одной школы дают бонус комплекта.\n\nЦена: 60 / 120 / 200 Клятвенного Золота за уровень.	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_talismanFIRST	Руна Отваги (Натиск)	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_talismanFIRST	Боевой дух: +8 / +12 / +15 по уровням.	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_talismanSECOND	Руна Оберега (Стойкость)	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_talismanSECOND	Сопротивление всему урону: +10 / +12 / +15 по уровням.	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_talismanTHIRD	Руна Разрушения чар (Мастерство)	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_talismanTHIRD	Сопротивление магии: +15 / +18 / +20 по уровням.	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_runes_talismanFOURTH	← Назад	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_runes_talismanFOURTH	К выбору рунного места.	false
+effect_bundles_localised_title_he_bundle_runes	Руны героя	false
+effect_bundles_localised_description_he_bundle_runes	Руны, высеченные на снаряжении героя рунными мастерами Хребта Сотека.	false
+pooled_resource_factors_display_name_positive_he_runes	Руны героев	false
+pooled_resource_factors_display_name_negative_he_runes	Руны героев	false
