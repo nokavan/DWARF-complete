@@ -210,8 +210,6 @@ def main():
         new = {k: sub(v) for k, v in old.items()}
         new[field] = NEW_CUL if t == "cultures_tables" else NEW_SUB
         new["index"] = new_int(t + NEW_CUL, existing)
-        if t == "cultures_tables":
-            new["fallback_ui_culture"] = "Dwarfs"
         out.add(t, tables[t]["version"], [n for n, _, _ in fields(t)], new)
     for prefix in ("cultures_name", "cultures_subcultures_name"):
         out.loc["%s_%s" % (prefix, NEW_CUL if prefix == "cultures_name" else NEW_SUB)] = CULTURE_NAME
@@ -304,6 +302,7 @@ def main():
     set_map = {}
     for r in sets:
         nr = sub_row(r, {"culture"})
+        nr["subculture"] = NEW_SUB   # custom cultures in Mixer fill culture AND subculture
         nr["key"] = r["key"] + SUFFIX
         set_map[r["key"]] = nr["key"]
         out.add("technology_node_sets_tables", tables["technology_node_sets_tables"]["version"],
