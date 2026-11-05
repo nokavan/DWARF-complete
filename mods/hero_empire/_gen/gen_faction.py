@@ -387,6 +387,21 @@ def main():
         if r["faction"] == "wh2_main_dwf_spine_of_sotek_dwarfs":
             add(t, dict(r, faction=FACTION))
 
+    # ---------------------------------------------------------------- 10. campaign selection screen
+    add("frontend_factions_tables", {"faction": FACTION, "video": "test_movie_warhammer", "sort_order": "1711"})
+    add("frontend_faction_groups_to_factions_tables", {"faction_group": "order", "faction_key": FACTION, "is_major_faction": "true",
+                                                       "sort_order": "1711", "show_in_frontend": "true"})
+    leader = {k: "" for k in hdr("frontend_faction_leaders_tables")}
+    leader.update({"uniform": "composite_scene\\lord_selection\\empire_provinces\\emperor_karl_franz.csc", "x_offset": "0.0",
+                   "y_offset": "0.0", "key": "he_leader_hero_empire", "character_image": FLAG_FROM + "\\mon_256.png",
+                   "video": "Front_end_selection_movies/franz_front_end", "loading_screen_image": "ui/loading_ui/load_images/campaign_empire1.png",
+                   "override_force_location_x": "-1.0", "override_force_location_y": "-1.0", "voiceover": "wh_main_vo_actor_Empire_KarlFranz",
+                   "show_full_intro_option": "false", "difficulty": "normal", "startpos_map": "default",
+                   "agent_subtype_record": "wh_main_emp_lord", "faction": FACTION})
+    add("frontend_faction_leaders_tables", leader)
+    for fld in meta["frontend_faction_leaders_tables"][str(tables["frontend_faction_leaders_tables"]["version"])]["loc"]:
+        out.loc["frontend_faction_leaders_%s_he_leader_hero_empire" % fld] = NAME
+
     out.write()
     for t, n in sorted(stats.items(), key=lambda x: -x[1])[:25]:
         print("%6d %s" % (n, t))

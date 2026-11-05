@@ -42,7 +42,11 @@ jobs:
           mkdir -p /tmp/game
           # only the zips (db.pack, local_*.pack); the release also holds multi-GB UI packs
           gh release download game-data -D /tmp/game --clobber -p '*.zip' || { echo "::error::download failed"; exit 1; }
-          for z in /tmp/game/*.zip; do unzip -oq "$z" -d /tmp/game || echo "::warning::unzip failed: $z"; done
+          # python extraction: db.zip (Assembly Kit raw data) has a "/" entry that unzip rejects
+          for z in /tmp/game/*.zip; do
+            d=/tmp/game/$(basename "$z" .zip); mkdir -p "$d"
+            python3 -I -c "import zipfile,sys,os; z=zipfile.ZipFile(sys.argv[1]); [z.extract(i, sys.argv[2]) for i in z.infolist() if i.filename.strip('/') and '..' not in i.filename]" "$z" "$d" || echo "::warning::extract failed: $z"
+          done
           ls -la /tmp/game
           DB=$(find /tmp/game -name db.pack | head -1)
           [ -n "$DB" ] || { echo "db.pack not found in game-data release"; exit 1; }
@@ -54,10 +58,19 @@ jobs:
       - name: Build packs
         run: python3 tools/build_pack.py
 
+      - name: Assembly Kit patch for the Hero Empire startpos
+        run: |
+          AK=$(find /tmp/game -path '*db/start_pos_factions.xml' -printf '%h\n' 2>/dev/null | head -1)
+          if [ -z "$AK" ]; then echo "no Assembly Kit raw data in game-data, skipped"; exit 0; fi
+          python3 -I mods/hero_empire/_gen/gen_ak_patch.py --ak "$AK" --out /tmp/ak_patch
+          (cd /tmp/ak_patch && zip -qr "$GITHUB_WORKSPACE/dist/hero_empire_ak_patch.zip" .)
+
       - uses: actions/upload-artifact@v4
         with:
           name: packs
-          path: dist/*.pack
+          path: |
+            dist/*.pack
+            dist/*.zip
 
       - name: Publish "latest" release
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -65,7 +78,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release delete latest --yes --cleanup-tag 2>/dev/null || true
-          gh release create latest dist/*.pack \
+          shopt -s nullglob; files=(dist/*.pack dist/*.zip)
+          gh release create latest "${files[@]}" \
             --title "Последняя сборка (main)" \
             --notes "Автосборка из коммита ${GITHUB_SHA::7}. Нужный .pack положите в папку data игры и включите в лаунчере." \
             --target "$GITHUB_SHA" --prerelease
