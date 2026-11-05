@@ -17,7 +17,14 @@ _G.cm = {
     apply_effect_bundle = function(_, b, f, t) bundles[b] = t end,
     remove_effect_bundle = function(_, b, f) bundles[b] = nil end,
     callback = function(_, f) callbacks[#callbacks + 1] = f end,
+    get_local_faction_name = function() return FK end,
+    repeat_callback = function(_, f, t, name) repeating = { f = f, t = t, name = name } end,
 }
+local holder = { visible = true }
+function holder:Visible() return self.visible end
+function holder:SetVisible(v) self.visible = v end
+_G.find_uicomponent = function(root, name) if name == "grudge_cycles_holder" then return holder end end
+core.get_ui_root = function() return {} end
 _G.grudge_cycle = { faction_times = { [FK] = 7 } }
 bundles["wh3_dlc25_grudge_cycle_2"] = 10   -- era bundle given by CA's script
 
@@ -32,6 +39,11 @@ check(bundles["wh3_dlc25_grudge_cycle_0"] == nil, "delayed pass removes a late e
 local l = listeners[1]
 check(l.ev == "FactionTurnStart" and l.cond({ faction = function() return faction end }), "turn-start listener for our faction")
 check(not l.cond({ faction = function() return { name = function() return "wh_main_dwf_dwarfs" end } end }), "other dwarfs untouched")
+
+check(holder.visible == false, "era indicator hidden")
+check(repeating and repeating.t == 1 and repeating.name == "he_hide_reckoning_ui", "indicator re-hidden every second")
+holder.visible = true; repeating.f()
+check(holder.visible == false, "repeat callback hides a recreated indicator")
 
 print(string.format("%d passed, %d failed", passed, failures))
 if failures > 0 then os.exit(1) end

@@ -1,3 +1,0 @@
-unique_id	factor	resource	minimum	maximum	specific_faction_set	sort_order
-#pooled_resource_factor_junctions_tables;3;db/pooled_resource_factor_junctions_tables/he_runes
-he_runes_oathgold	he_runes	dwf_oathgold	-1000000	1000000		98

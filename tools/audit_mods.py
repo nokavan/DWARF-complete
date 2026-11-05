@@ -120,6 +120,13 @@ def main():
             if n < 50:
                 errors.append("%s: building set %s has only %d chains but is assigned to %s - it would replace the "
                               "whole culture building set" % (mod, r["set_id"], n, r["faction"] or r["sub_culture"] or r["culture"]))
+        # rune/item slots are per faction; a subtype override would cut them for new heroes
+        overrides = {r["agent_subtype"] for r in game_rows("ancillaries_categories_agent_subtype_override_junctions_tables")
+                     + mod_rows.get("ancillaries_categories_agent_subtype_override_junctions_tables", [])}
+        for r in mod_rows.get("faction_agent_permitted_subtypes_tables", []):
+            if r["subtype"] in overrides:
+                errors.append("%s: hero %s has an ancillary category override - it would not get the faction's rune slots"
+                              % (mod, r["subtype"]))
         agents = {r["agent"] for r in game_rows("faction_agent_permitted_subtypes_tables")}
         for r in mod_rows.get("agent_actions_tables", []):
             if r["agent"] not in agents:
