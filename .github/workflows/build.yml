@@ -39,12 +39,17 @@ jobs:
         run: |
           if ! gh release view game-data >/dev/null 2>&1; then echo "no game-data release, audit skipped"; exit 0; fi
           pip install -q zstandard
-          mkdir -p /tmp/game && gh release download game-data -D /tmp/game --clobber
-          for z in /tmp/game/*.zip; do [ -e "$z" ] && unzip -oq "$z" -d /tmp/game; done
+          mkdir -p /tmp/game
+          # only the zips (db.pack, local_*.pack); the release also holds multi-GB UI packs
+          gh release download game-data -D /tmp/game --clobber -p '*.zip' || { echo "::error::download failed"; exit 1; }
+          for z in /tmp/game/*.zip; do unzip -oq "$z" -d /tmp/game || echo "::warning::unzip failed: $z"; done
+          ls -la /tmp/game
           DB=$(find /tmp/game -name db.pack | head -1)
           [ -n "$DB" ] || { echo "db.pack not found in game-data release"; exit 1; }
           curl -sSLf -o /tmp/schema_wh3.ron https://raw.githubusercontent.com/Frodo45127/rpfm-schemas/master/schema_wh3.ron
-          python3 tools/audit_mods.py "$DB" /tmp/schema_wh3.ron
+          python3 tools/audit_mods.py "$DB" /tmp/schema_wh3.ron > /tmp/audit.txt 2>&1; rc=$?
+          cat /tmp/audit.txt
+          if [ $rc -ne 0 ]; then echo "::error title=audit::$(tail -c 3000 /tmp/audit.txt | tr '\n' '|')"; exit $rc; fi
 
       - name: Build packs
         run: python3 tools/build_pack.py
