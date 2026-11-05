@@ -1,0 +1,7 @@
+chain	remove	set	super_chain
+#building_chain_set_items_tables;0;db/building_chain_set_items_tables/hero_empire
+he_pod_trade	false	he_pod_chain_set	
+he_pod_bastion	false	he_pod_chain_set	
+he_pod_trail	false	he_pod_chain_set	
+he_pod_infirmary	false	he_pod_chain_set	
+he_pod_heroes	false	he_pod_chain_set	

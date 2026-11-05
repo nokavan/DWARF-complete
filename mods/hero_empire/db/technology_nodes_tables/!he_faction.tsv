@@ -1,0 +1,91 @@
+campaign_key	faction_key	indent	key	technology_key	technology_node_set	tier	research_points_required	cost_per_round	food_cost	optional_ui_group	resource_cost	required_parents	pixel_offset_x	pixel_offset_y
+#technology_nodes_tables;0;db/technology_nodes_tables/!he_faction
+		4	wh2_dlc13_tech_emp_academia_1_he	wh2_dlc13_tech_emp_academia_1	emp_civ_reworkd_he	2	700	0	0	emp_eco		0	0	21
+		4	wh2_dlc13_tech_emp_academia_1_a_he	wh2_dlc13_tech_emp_academia_1_a	emp_civ_reworkd_he	6	700	0	0	emp_aca		0	21	21
+		3	wh2_dlc13_tech_emp_academia_1_b_he	wh2_dlc13_tech_emp_academia_1_b	emp_civ_reworkd_he	4	700	0	0	emp_aca		0	21	0
+		4	wh2_dlc13_tech_emp_academia_2_he	wh2_dlc13_tech_emp_academia_2	emp_civ_reworkd_he	1	500	0	0	emp_eco		0	0	21
+		3	wh2_dlc13_tech_emp_academia_2_a_he	wh2_dlc13_tech_emp_academia_2_a	emp_civ_reworkd_he	2	700	0	0	emp_eco		0	0	0
+		1	wh2_dlc13_tech_emp_academia_2_b_he	wh2_dlc13_tech_emp_academia_2_b	emp_civ_reworkd_he	7	900	0	0	emp_art		0	63	5
+		4	wh2_dlc13_tech_emp_academia_3_he	wh2_dlc13_tech_emp_academia_3	emp_civ_reworkd_he	3	900	0	0	emp_eco		0	0	21
+		3	wh2_dlc13_tech_emp_academia_3_a_he	wh2_dlc13_tech_emp_academia_3_a	emp_civ_reworkd_he	6	700	0	0	emp_aca		0	21	0
+		0	wh2_dlc13_tech_emp_academia_3_b_he	wh2_dlc13_tech_emp_academia_3_b	emp_civ_reworkd_he	8	300	0	0	emp_machines		0	84	0
+		0	wh2_dlc13_tech_emp_cav_1_he	wh2_dlc13_tech_emp_cav_1	emp_civ_reworkd_he	4	300	0	0	emp_cav		0	42	0
+		1	wh2_dlc13_tech_emp_cav_1_a_he	wh2_dlc13_tech_emp_cav_1_a	emp_civ_reworkd_he	4	600	0	0	emp_cav		0	42	5
+		0	wh2_dlc13_tech_emp_cav_1_b_he	wh2_dlc13_tech_emp_cav_1_b	emp_civ_reworkd_he	5	600	0	0	emp_cav		0	42	0
+		1	wh2_dlc13_tech_emp_cav_1_c_he	wh2_dlc13_tech_emp_cav_1_c	emp_civ_reworkd_he	5	900	0	0	emp_cav		0	42	5
+		6	wh2_dlc13_tech_emp_diplomacy_1_a_he	wh3_dlc25_tech_emp_diplomacy_1_a	emp_civ_reworkd_he	0	100	7000	0	emp_dip		0	0	21
+		6	wh2_dlc13_tech_emp_diplomacy_1_b_he	wh2_dlc13_tech_emp_diplomacy_1_b	emp_civ_reworkd_he	1	100	7000	0	emp_dip		0	0	21
+		6	wh2_dlc13_tech_emp_diplomacy_1_c_he	wh2_dlc13_tech_emp_diplomacy_1_c	emp_civ_reworkd_he	2	100	7000	0	emp_dip		0	0	21
+		7	wh2_dlc13_tech_emp_diplomacy_1_d_he	wh2_dlc13_tech_emp_diplomacy_1_d	emp_civ_reworkd_he	0	100	7000	0	emp_dip		0	0	42
+		3	wh2_dlc13_tech_emp_economy_1_a_he	wh2_dlc13_tech_emp_economy_1_a	emp_civ_reworkd_he	3	900	0	0	emp_eco		0	0	0
+		4	wh2_dlc13_tech_emp_economy_2_he	wh2_dlc13_tech_emp_economy_2	emp_civ_reworkd_he	0	300	0	0	emp_eco		0	0	21
+		3	wh2_dlc13_tech_emp_economy_2_a_he	wh2_dlc13_tech_emp_economy_2_a	emp_civ_reworkd_he	1	500	0	0	emp_eco		0	0	0
+		3	wh2_dlc13_tech_emp_economy_3_he	wh2_dlc13_tech_emp_economy_3	emp_civ_reworkd_he	0	300	0	0	emp_eco		0	0	0
+		3	wh2_dlc13_tech_emp_economy_3_a_he	wh2_dlc13_tech_emp_economy_3_a	emp_civ_reworkd_he	5	1000	0	0	emp_aca		0	21	40
+	wh_main_emp_empire	7	wh2_dlc13_tech_emp_elector_counts_1_he	wh2_dlc13_tech_emp_elector_counts_1	emp_civ_reworkd_he	5	100	0	0	emp_unique	wh2_dlc13_tech_emp_elector_counts_2	0	42	42
+	wh_main_emp_empire	6	wh2_dlc13_tech_emp_elector_counts_2_he	wh2_dlc13_tech_emp_elector_counts_2	emp_civ_reworkd_he	5	100	0	0	emp_unique	wh2_dlc13_tech_emp_elector_counts_1	0	42	21
+		0	wh2_dlc13_tech_emp_infantry_1_he	wh2_dlc13_tech_emp_infantry_1	emp_civ_reworkd_he	0	300	0	0	emp_mil		0	0	0
+		0	wh2_dlc13_tech_emp_infantry_1_a_he	wh2_dlc13_tech_emp_infantry_1_a	emp_civ_reworkd_he	1	600	0	0	emp_mil		0	0	0
+		1	wh2_dlc13_tech_emp_infantry_1_b_he	wh2_dlc13_tech_emp_infantry_1_b	emp_civ_reworkd_he	0	600	0	0	emp_mil		0	0	5
+		1	wh2_dlc13_tech_emp_infantry_1_c_he	wh2_dlc13_tech_emp_infantry_1_c	emp_civ_reworkd_he	1	900	0	0	emp_mil		0	0	5
+		1	wh2_dlc13_tech_emp_machine_1_he	wh2_dlc13_tech_emp_machine_1	emp_civ_reworkd_he	6	600	0	0	emp_art		0	63	5
+		1	wh2_dlc13_tech_emp_machine_1_a_he	wh2_dlc13_tech_emp_machine_1_a	emp_civ_reworkd_he	8	600	0	0	emp_machines		0	84	5
+		0	wh2_dlc13_tech_emp_machine_1_b_he	wh2_dlc13_tech_emp_machine_1_b	emp_civ_reworkd_he	6	300	0	0	emp_art		0	63	0
+		0	wh2_dlc13_tech_emp_missile_1_he	wh2_dlc13_tech_emp_missile_1	emp_civ_reworkd_he	2	300	0	0	emp_missiles		0	21	0
+		0	wh2_dlc13_tech_emp_missile_1_a_he	wh2_dlc13_tech_emp_missile_1_a	emp_civ_reworkd_he	3	600	0	0	emp_missiles		0	21	0
+		1	wh2_dlc13_tech_emp_missile_1_b_he	wh2_dlc13_tech_emp_missile_1_b	emp_civ_reworkd_he	3	900	0	0	emp_missiles		0	21	5
+		6	wh2_dlc13_tech_emp_purge_1_he	wh2_dlc13_tech_emp_purge_1	emp_civ_reworkd_he	3	100	7000	0	emp_enemies		0	21	21
+		6	wh2_dlc13_tech_emp_purge_2_he	wh2_dlc13_tech_emp_purge_2	emp_civ_reworkd_he	4	100	7000	0	emp_enemies		0	21	21
+		7	wh2_dlc13_tech_emp_purge_3_he	wh2_dlc13_tech_emp_purge_3	emp_civ_reworkd_he	3	100	7000	0	emp_enemies		0	21	42
+		7	wh2_dlc13_tech_emp_purge_4_he	wh2_dlc13_tech_emp_purge_4	emp_civ_reworkd_he	4	100	7000	0	emp_enemies		0	21	42
+	wh2_dlc13_emp_the_huntmarshals_expedition	6	wh2_dlc13_tech_emp_wulfhart_1_he	wh2_dlc13_tech_emp_wulfhart_1	emp_civ_reworkd_he	5	700	0	0	emp_unique_wulfhart		0	42	21
+	wh2_dlc13_emp_the_huntmarshals_expedition	7	wh2_dlc13_tech_emp_wulfhart_2_he	wh2_dlc13_tech_emp_wulfhart_2	emp_civ_reworkd_he	5	1000	0	0	emp_unique_wulfhart		0	42	42
+	wh2_dlc13_emp_the_huntmarshals_expedition	6	wh2_dlc13_tech_emp_wulfhart_3_he	wh2_dlc13_tech_emp_wulfhart_3	emp_civ_reworkd_he	6	700	0	0	emp_unique_wulfhart		0	42	21
+	wh2_dlc13_emp_the_huntmarshals_expedition	7	wh2_dlc13_tech_emp_wulfhart_4_he	wh2_dlc13_tech_emp_wulfhart_4	emp_civ_reworkd_he	6	1000	0	0	emp_unique_wulfhart		0	42	42
+		1	wh2_dlc25_tech_emp_missile_1_c_he	wh2_dlc25_tech_emp_missile_1_c	emp_civ_reworkd_he	2	600	0	0	emp_missiles		0	21	5
+		0	wh3_dlc25_tech_emp_art_c_he	wh3_dlc25_tech_emp_art_c	emp_civ_reworkd_he	7	600	0	0	emp_art		0	63	0
+		7	wh3_dlc25_tech_emp_diplomacy_1_e_he	wh3_dlc25_tech_emp_diplomacy_1_e	emp_civ_reworkd_he	1	100	7000	0	emp_dip		0	0	42
+		7	wh3_dlc25_tech_emp_diplomacy_1_f_he	wh3_dlc25_tech_emp_diplomacy_1_f	emp_civ_reworkd_he	2	100	7000	0	emp_dip		0	0	42
+	wh_main_emp_wissenland	6	wh3_dlc25_tech_emp_elspeth_1_he	wh3_dlc25_tech_emp_elspeth_1	emp_civ_reworkd_he	5	700	0	0	emp_unique_elspeth		0	42	21
+	wh_main_emp_wissenland	7	wh3_dlc25_tech_emp_elspeth_2_he	wh3_dlc25_tech_emp_elspeth_2	emp_civ_reworkd_he	5	1000	0	0	emp_unique_elspeth		0	42	42
+	wh_main_emp_wissenland	6	wh3_dlc25_tech_emp_elspeth_3_he	wh3_dlc25_tech_emp_elspeth_3	emp_civ_reworkd_he	6	700	0	0	emp_unique_elspeth		0	42	21
+	wh_main_emp_wissenland	7	wh3_dlc25_tech_emp_elspeth_4_he	wh3_dlc25_tech_emp_elspeth_4	emp_civ_reworkd_he	6	1000	0	0	emp_unique_elspeth		0	42	42
+	wh2_dlc13_emp_golden_order	6	wh3_dlc25_tech_emp_gelt_1_he	wh3_dlc25_tech_emp_gelt_1	emp_civ_reworkd_he	5	700	0	0	emp_unique_gelt		0	42	21
+	wh2_dlc13_emp_golden_order	7	wh3_dlc25_tech_emp_gelt_2_he	wh3_dlc25_tech_emp_gelt_2	emp_civ_reworkd_he	5	1000	0	0	emp_unique_gelt		0	42	42
+		0	wh3_dlc25_tech_emp_machine_1_c_he	wh3_dlc25_tech_emp_machine_1_c	emp_civ_reworkd_he	9	600	0	0	emp_machines		0	84	0
+		1	wh3_dlc25_tech_emp_machine_1_d_he	wh3_dlc25_tech_emp_machine_1_d	emp_civ_reworkd_he	9	900	0	0	emp_machines		0	84	5
+		3	wh3_dlc25_tech_emp_magic_1_he	wh3_dlc25_tech_emp_magic_1	emp_civ_reworkd_he	7	300	0	0	emp_com		0	42	40
+		4	wh3_dlc25_tech_emp_magic_2_he	wh3_dlc25_tech_emp_magic_2	emp_civ_reworkd_he	8	600	0	0	emp_com		0	42	21
+		3	wh3_dlc25_tech_emp_magic_3_he	wh3_dlc25_tech_emp_magic_3	emp_civ_reworkd_he	8	600	0	0	emp_com		0	42	0
+		3	wh3_dlc25_tech_emp_magic_4_he	wh3_dlc25_tech_emp_magic_4	emp_civ_reworkd_he	9	900	0	0	emp_com		0	42	40
+	wh_main_emp_wissenland	6	wh3_dlc25_tech_emp_state_troops_1_elspeth_he	wh3_dlc25_tech_emp_state_troops_1	emp_civ_reworkd_he	7	100	7500	0	emp_state_troops_elspeth		0	63	21
+	wh2_dlc13_emp_golden_order	6	wh3_dlc25_tech_emp_state_troops_1_gelt_he	wh3_dlc25_tech_emp_state_troops_1	emp_civ_reworkd_he	6	100	7500	0	emp_state_troops_gelt		0	63	21
+	wh_main_emp_wissenland	6	wh3_dlc25_tech_emp_state_troops_2_elspeth_he	wh3_dlc25_tech_emp_state_troops_2	emp_civ_reworkd_he	8	100	7500	0	emp_state_troops_elspeth		0	63	21
+	wh2_dlc13_emp_golden_order	6	wh3_dlc25_tech_emp_state_troops_2_gelt_he	wh3_dlc25_tech_emp_state_troops_2	emp_civ_reworkd_he	7	100	7500	0	emp_state_troops_gelt		0	63	21
+	wh_main_emp_wissenland	6	wh3_dlc25_tech_emp_state_troops_3_elspeth_he	wh3_dlc25_tech_emp_state_troops_3	emp_civ_reworkd_he	9	100	7500	0	emp_state_troops_elspeth		0	63	21
+	wh2_dlc13_emp_golden_order	6	wh3_dlc25_tech_emp_state_troops_3_gelt_he	wh3_dlc25_tech_emp_state_troops_3	emp_civ_reworkd_he	8	100	7500	0	emp_state_troops_gelt		0	63	21
+	wh_main_emp_wissenland	7	wh3_dlc25_tech_emp_state_troops_4_elspeth_he	wh3_dlc25_tech_emp_state_troops_4	emp_civ_reworkd_he	7	100	7500	0	emp_state_troops_elspeth		0	63	42
+	wh2_dlc13_emp_golden_order	7	wh3_dlc25_tech_emp_state_troops_4_gelt_he	wh3_dlc25_tech_emp_state_troops_4	emp_civ_reworkd_he	6	100	7500	0	emp_state_troops_gelt		0	63	42
+	wh_main_emp_wissenland	7	wh3_dlc25_tech_emp_state_troops_5_elspeth_he	wh3_dlc25_tech_emp_state_troops_5	emp_civ_reworkd_he	8	100	7500	0	emp_state_troops_elspeth		0	63	42
+	wh2_dlc13_emp_golden_order	7	wh3_dlc25_tech_emp_state_troops_5_gelt_he	wh3_dlc25_tech_emp_state_troops_5	emp_civ_reworkd_he	7	100	7500	0	emp_state_troops_gelt		0	63	42
+	wh_main_emp_wissenland	7	wh3_dlc25_tech_emp_state_troops_6_elspeth_he	wh3_dlc25_tech_emp_state_troops_6	emp_civ_reworkd_he	9	100	7500	0	emp_state_troops_elspeth		0	63	42
+	wh2_dlc13_emp_golden_order	7	wh3_dlc25_tech_emp_state_troops_6_gelt_he	wh3_dlc25_tech_emp_state_troops_6	emp_civ_reworkd_he	8	100	7500	0	emp_state_troops_gelt		0	63	42
+		4	wh3_dlc29_tech_emp_economy_1_b_common_he	wh3_dlc29_tech_emp_economy_1_b_common	emp_civ_reworkd_he	4	700	0	0	emp_aca		0	21	21
+	wh_main_emp_middenland	6	wh3_dlc29_tech_emp_state_troops_1_boris_he	wh3_dlc25_tech_emp_state_troops_1	emp_civ_reworkd_he	7	100	7500	0	emp_state_troops_elspeth		0	63	21
+	wh3_main_emp_cult_of_sigmar	6	wh3_dlc29_tech_emp_state_troops_1_volkmar_he	wh3_dlc25_tech_emp_state_troops_1	emp_civ_reworkd_he	6	100	7500	0	emp_state_troops_elspeth		0	63	21
+	wh_main_emp_middenland	6	wh3_dlc29_tech_emp_state_troops_2_boris_he	wh3_dlc25_tech_emp_state_troops_2	emp_civ_reworkd_he	8	100	7500	0	emp_state_troops_elspeth		0	63	21
+	wh3_main_emp_cult_of_sigmar	6	wh3_dlc29_tech_emp_state_troops_2_volkmar_he	wh3_dlc25_tech_emp_state_troops_2	emp_civ_reworkd_he	7	100	7500	0	emp_state_troops_elspeth		0	63	21
+	wh_main_emp_middenland	6	wh3_dlc29_tech_emp_state_troops_3_boris_he	wh3_dlc25_tech_emp_state_troops_3	emp_civ_reworkd_he	9	100	7500	0	emp_state_troops_elspeth		0	63	21
+	wh3_main_emp_cult_of_sigmar	6	wh3_dlc29_tech_emp_state_troops_3_volkmar_he	wh3_dlc25_tech_emp_state_troops_3	emp_civ_reworkd_he	8	100	7500	0	emp_state_troops_elspeth		0	63	21
+	wh_main_emp_middenland	7	wh3_dlc29_tech_emp_state_troops_4_boris_he	wh3_dlc25_tech_emp_state_troops_4	emp_civ_reworkd_he	7	100	7500	0	emp_state_troops_elspeth		0	63	42
+	wh3_main_emp_cult_of_sigmar	7	wh3_dlc29_tech_emp_state_troops_4_volkmar_he	wh3_dlc25_tech_emp_state_troops_4	emp_civ_reworkd_he	6	100	7500	0	emp_state_troops_elspeth		0	63	42
+	wh_main_emp_middenland	7	wh3_dlc29_tech_emp_state_troops_5_boris_he	wh3_dlc25_tech_emp_state_troops_5	emp_civ_reworkd_he	8	100	7500	0	emp_state_troops_elspeth		0	63	42
+	wh3_main_emp_cult_of_sigmar	7	wh3_dlc29_tech_emp_state_troops_5_volkmar_he	wh3_dlc25_tech_emp_state_troops_5	emp_civ_reworkd_he	7	100	7500	0	emp_state_troops_elspeth		0	63	42
+	wh_main_emp_middenland	7	wh3_dlc29_tech_emp_state_troops_6_boris_he	wh3_dlc25_tech_emp_state_troops_6	emp_civ_reworkd_he	9	100	7500	0	emp_state_troops_elspeth		0	63	42
+	wh3_main_emp_cult_of_sigmar	7	wh3_dlc29_tech_emp_state_troops_6_volkmar_he	wh3_dlc25_tech_emp_state_troops_6	emp_civ_reworkd_he	8	100	7500	0	emp_state_troops_elspeth		0	63	42
+	wh3_main_emp_cult_of_sigmar	7	wh3_main_tech_emp_divine_mandate_volkmar_he	wh3_main_tech_emp_divine_mandate_volkmar	emp_civ_reworkd_he	5	700	0	0	emp_unique_volkmar		0	42	42
+	wh3_main_emp_cult_of_sigmar	6	wh3_main_tech_emp_fanatics_decree_volkmar_he	wh3_main_tech_emp_fanatics_decree_volkmar	emp_civ_reworkd_he	5	1000	0	0	emp_unique_volkmar		0	42	21
+	wh_main_emp_middenland	6	wh_dlc29_tech_emp_boris_01_he	wh3_dlc29_emp_boris_count_01	emp_civ_reworkd_he	5	700	0	0	emp_unique_boris		0	42	21
+	wh_main_emp_middenland	6	wh_dlc29_tech_emp_boris_02_he	wh3_dlc29_emp_boris_count_02	emp_civ_reworkd_he	6	700	0	0	emp_unique_boris		0	42	21
+	wh_main_emp_middenland	7	wh_dlc29_tech_emp_boris_03_he	wh3_dlc29_emp_boris_count_03	emp_civ_reworkd_he	5	1000	0	0	emp_unique_boris		0	42	42
+	wh_main_emp_middenland	7	wh_dlc29_tech_emp_boris_04_he	wh3_dlc29_emp_boris_count_04	emp_civ_reworkd_he	6	1000	0	0	emp_unique_boris		0	42	42

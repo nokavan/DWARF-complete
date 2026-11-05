@@ -1,0 +1,17 @@
+building	culture	description	icon	subculture	faction	disables	short_description	display_tooltip	building_frame_override
+#building_culture_variants_tables;5;db/building_culture_variants_tables/hero_empire
+he_pod_trade_1		wh_main_PLACEHOLDER	dwarf_guild_worshops		he_faction_hero_empire	false	he_pod_trade_1	true	
+he_pod_trade_2		wh_main_PLACEHOLDER	dwarf_guild_worshops		he_faction_hero_empire	false	he_pod_trade_2	true	
+he_pod_trade_3		wh_main_PLACEHOLDER	dwarf_guild_worshops		he_faction_hero_empire	false	he_pod_trade_3	true	
+he_pod_bastion_1		wh_main_PLACEHOLDER	chd_tower_ballistics		he_faction_hero_empire	false	he_pod_bastion_1	true	
+he_pod_bastion_2		wh_main_PLACEHOLDER	chd_tower_ballistics		he_faction_hero_empire	false	he_pod_bastion_2	true	
+he_pod_bastion_3		wh_main_PLACEHOLDER	chd_tower_ballistics		he_faction_hero_empire	false	he_pod_bastion_3	true	
+he_pod_trail_1		wh_main_PLACEHOLDER	wood_elves_temple_waystones		he_faction_hero_empire	false	he_pod_trail_1	true	
+he_pod_trail_2		wh_main_PLACEHOLDER	wood_elves_temple_waystones		he_faction_hero_empire	false	he_pod_trail_2	true	
+he_pod_trail_3		wh_main_PLACEHOLDER	wood_elves_temple_waystones		he_faction_hero_empire	false	he_pod_trail_3	true	
+he_pod_infirmary_1		wh_main_PLACEHOLDER	dwarf_engineering		he_faction_hero_empire	false	he_pod_infirmary_1	true	
+he_pod_infirmary_2		wh_main_PLACEHOLDER	dwarf_engineering		he_faction_hero_empire	false	he_pod_infirmary_2	true	
+he_pod_infirmary_3		wh_main_PLACEHOLDER	dwarf_engineering		he_faction_hero_empire	false	he_pod_infirmary_3	true	
+he_pod_heroes_1		wh_main_PLACEHOLDER	dwarf_guild_worshops		he_faction_hero_empire	false	he_pod_heroes_1	true	
+he_pod_heroes_2		wh_main_PLACEHOLDER	dwarf_guild_worshops		he_faction_hero_empire	false	he_pod_heroes_2	true	
+he_pod_heroes_3		wh_main_PLACEHOLDER	dwarf_guild_worshops		he_faction_hero_empire	false	he_pod_heroes_3	true	

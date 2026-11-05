@@ -1,0 +1,4 @@
+allowed_per_character	ancillary_category	faction
+#ancillaries_categories_faction_junctions_tables;1;db/ancillaries_categories_faction_junctions_tables/!he_faction
+3	arcane_item	he_faction_hero_empire
+8	general	he_faction_hero_empire

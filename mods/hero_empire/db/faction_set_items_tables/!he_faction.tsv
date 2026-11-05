@@ -1,0 +1,21 @@
+culture	faction	remove	set	subculture	id
+#faction_set_items_tables;1;db/faction_set_items_tables/!he_faction
+he_hero_empire		false	wh3_dlc25_nur_chieftain_battle_cultures_exalted_hero		141267866
+he_hero_empire		false	anc_set_multi_kislev_bretonnia_empire		266351753
+he_hero_empire		false	anc_set_multi_kislev_norsca_bretonnia_chaos_dwarfs_empire_vampire_counts		242884530
+he_hero_empire		false	human_factions		127071679
+he_hero_empire		false	anc_set_multi_kislev_bretonnia_dwarfs_empire_greenskins		131582634
+		false	slaanesh_seducible_factions	he_sc_hero_empire	196991526
+he_hero_empire		false	anc_set_multi_kislev_empire		244305243
+		false	anc_set_multi_sc_kislev_bretonnia_empire_southern_realms	he_sc_hero_empire	251637061
+he_hero_empire		false	anc_set_multi_high_elves_kislev_norsca_chaos_empire		163209880
+he_hero_empire		false	anc_set_exclusive_lore_of_beasts		100937578
+he_hero_empire		false	faction_set_civil		316586855
+he_hero_empire		false	wh3_dlc25_emp_electoral_machination_target_factions		341885254
+he_hero_empire		false	anc_set_multi_tomb_kings_vampire_coast_dark_elves_high_elves_kislev_empire_vampire_counts		272586848
+he_hero_empire		false	FavouredCorruptionNone		313869889
+he_hero_empire		false	non_colonial_empire_factions		148078441
+		false	anc_set_exclusive_sc_empire	he_sc_hero_empire	167199387
+		false	empire_subculture	he_sc_hero_empire	336508267
+he_hero_empire		false	empire_culture		200853402
+he_hero_empire		false	anc_set_multi_high_elves_kislev_wood_elves_bretonnia_empire		297049583

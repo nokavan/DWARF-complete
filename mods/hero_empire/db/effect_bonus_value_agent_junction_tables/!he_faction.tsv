@@ -1,0 +1,8 @@
+effect	bonus_value_id	agent
+#effect_bonus_value_agent_junction_tables;0;db/effect_bonus_value_agent_junction_tables/!he_faction
+he_effect_agent_cap_increase_champion	cap	champion
+he_effect_agent_cap_increase_dignitary	cap	dignitary
+he_effect_agent_cap_increase_engineer	cap	engineer
+he_effect_agent_cap_increase_runesmith	cap	runesmith
+he_effect_agent_cap_increase_spy	cap	spy
+he_effect_agent_cap_increase_wizard	cap	wizard

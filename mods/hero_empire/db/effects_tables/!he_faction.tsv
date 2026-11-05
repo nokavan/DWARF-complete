@@ -1,0 +1,8 @@
+effect	icon	priority	icon_negative	category	is_positive_value_good
+#effects_tables;0;db/effects_tables/!he_faction
+he_effect_agent_cap_increase_champion	champion.png	102	champion.png	campaign	true
+he_effect_agent_cap_increase_dignitary	dignitary.png	102	dignitary.png	campaign	true
+he_effect_agent_cap_increase_engineer	engineer.png	102	engineer.png	campaign	true
+he_effect_agent_cap_increase_runesmith	runesmith.png	102	runesmith.png	campaign	true
+he_effect_agent_cap_increase_spy	spy.png	102	spy.png	campaign	true
+he_effect_agent_cap_increase_wizard	wizard.png	102	wizard.png	campaign	true

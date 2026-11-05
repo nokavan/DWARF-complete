@@ -1,0 +1,12 @@
+from	to
+#building_upgrades_junction_tables;0;db/building_upgrades_junction_tables/hero_empire
+he_pod_trade_1	he_pod_trade_2
+he_pod_trade_2	he_pod_trade_3
+he_pod_bastion_1	he_pod_bastion_2
+he_pod_bastion_2	he_pod_bastion_3
+he_pod_trail_1	he_pod_trail_2
+he_pod_trail_2	he_pod_trail_3
+he_pod_infirmary_1	he_pod_infirmary_2
+he_pod_infirmary_2	he_pod_infirmary_3
+he_pod_heroes_1	he_pod_heroes_2
+he_pod_heroes_2	he_pod_heroes_3

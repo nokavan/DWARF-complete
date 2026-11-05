@@ -1,0 +1,4 @@
+blockade	culture	model_bmd
+#campaign_settlement_display_building_siege_models_tables;0;db/campaign_settlement_display_building_siege_models_tables/!he_faction
+false	he_hero_empire	prefabs/campaign/greenskins_siege.bmd
+true	he_hero_empire	prefabs/campaign/greenskins_siege.bmd

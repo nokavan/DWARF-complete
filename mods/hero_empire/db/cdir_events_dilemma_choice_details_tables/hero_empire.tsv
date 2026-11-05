@@ -1,0 +1,4 @@
+choice_key	dilemma_key	audio_event_hover	audio_choice_vo
+#cdir_events_dilemma_choice_details_tables;4;db/cdir_events_dilemma_choice_details_tables/hero_empire
+FIRST	he_dilemma_found_podvorye		
+SECOND	he_dilemma_found_podvorye		

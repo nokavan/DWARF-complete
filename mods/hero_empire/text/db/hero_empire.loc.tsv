@@ -1,0 +1,58 @@
+key	text	tooltip
+#Loc;1;text/db/hero_empire.loc
+building_culture_variants_name_he_pod_trade_1he_faction_hero_empire	Торговый двор	false
+building_short_description_texts_text_he_pod_trade_1	Доход региона союзника +10%, рост провинции +5. Нам: +100 золота за ход, отношения с союзником растут. Стоимость: 600 золота.	false
+building_culture_variants_name_he_pod_trade_2he_faction_hero_empire	Торговая гильдия	false
+building_short_description_texts_text_he_pod_trade_2	Доход региона союзника +20%, рост +10. Нам: +250 золота и 5% дохода региона. Стоимость: 1200 золота.	false
+building_culture_variants_name_he_pod_trade_3he_faction_hero_empire	Подгорная биржа	false
+building_short_description_texts_text_he_pod_trade_3	Доход региона союзника +30%, рост +15. Нам: +400 золота и 10% дохода региона. Стоимость: 2000 золота.	false
+building_chains_chain_tooltip_he_pod_trade	Торговый двор	false
+building_chains_encyclopedia_name_he_pod_trade	Торговый двор	false
+building_chains_encyclopedia_description_he_pod_trade	Купцы Империи героев ведут дела в городе союзника — и обе стороны богатеют.	false
+building_culture_variants_name_he_pod_bastion_1he_faction_hero_empire	Сторожевой пост	false
+building_short_description_texts_text_he_pod_bastion_1	Порядок в провинции союзника +3, очки найма +1. Наши герои действуют успешнее (+10%). Стоимость: 600 золота.	false
+building_culture_variants_name_he_pod_bastion_2he_faction_hero_empire	Бастион	false
+building_short_description_texts_text_he_pod_bastion_2	Порядок +6, очки найма +1, нанятые отряды союзника получают +1 ранг. Успех героев +15%. Стоимость: 1200 золота.	false
+building_culture_variants_name_he_pod_bastion_3he_faction_hero_empire	Подгорная цитадель	false
+building_short_description_texts_text_he_pod_bastion_3	Порядок +10, очки найма +2, отряды союзника +2 ранга. Успех героев +20%. Стоимость: 2000 золота.	false
+building_chains_chain_tooltip_he_pod_bastion	Бастион	false
+building_chains_encyclopedia_name_he_pod_bastion	Бастион	false
+building_chains_encyclopedia_description_he_pod_bastion	Гномьи наставники учат ополчение союзника держать стены.	false
+building_culture_variants_name_he_pod_trail_1he_faction_hero_empire	Застава троп	false
+building_short_description_texts_text_he_pod_trail_1	Армии союзника: дальность хода +5%. Наши армии в регионе: +10%. Стоимость: 600 золота.	false
+building_culture_variants_name_he_pod_trail_2he_faction_hero_empire	Тропяная станция	false
+building_short_description_texts_text_he_pod_trail_2	Армии союзника: +10%. Наши армии в регионе: +20%, пополнение на чужой земле. Стоимость: 1200 золота.	false
+building_culture_variants_name_he_pod_trail_3he_faction_hero_empire	Узел подгорных троп	false
+building_short_description_texts_text_he_pod_trail_3	Армии союзника: +15% и пополнение на чужой земле. Наши армии в регионе: +30%. Стоимость: 2000 золота.	false
+building_chains_chain_tooltip_he_pod_trail	Застава троп	false
+building_chains_encyclopedia_name_he_pod_trail	Застава троп	false
+building_chains_encyclopedia_description_he_pod_trail	Тайные тропы связывают подворья со столицей Империи героев.	false
+building_culture_variants_name_he_pod_infirmary_1he_faction_hero_empire	Лазарет	false
+building_short_description_texts_text_he_pod_infirmary_1	Армии союзника: пополнение +5%. Наши герои: время ранения −1 ход. Стоимость: 600 золота.	false
+building_culture_variants_name_he_pod_infirmary_2he_faction_hero_empire	Госпиталь Валайи	false
+building_short_description_texts_text_he_pod_infirmary_2	Армии союзника: пополнение +10%, найм −5%. Раны героев −2 хода. Стоимость: 1200 золота.	false
+building_culture_variants_name_he_pod_infirmary_3he_faction_hero_empire	Чертоги исцеления	false
+building_short_description_texts_text_he_pod_infirmary_3	Армии союзника: пополнение +15%, найм −10%. Раны героев −3 хода. Стоимость: 2000 золота.	false
+building_chains_chain_tooltip_he_pod_infirmary	Лазарет	false
+building_chains_encyclopedia_name_he_pod_infirmary	Лазарет	false
+building_chains_encyclopedia_description_he_pod_infirmary	Жрицы Валайи лечат раненых — своих и союзных.	false
+building_culture_variants_name_he_pod_heroes_1he_faction_hero_empire	Зал героев	false
+building_short_description_texts_text_he_pod_heroes_1	Наши герои: +100 опыта за ход. Армии союзника: опыт отрядов +5%. Исследования +5%. Стоимость: 600 золота.	false
+building_culture_variants_name_he_pod_heroes_2he_faction_hero_empire	Зал Ветеранов	false
+building_short_description_texts_text_he_pod_heroes_2	Наши герои: +200 опыта. Опыт отрядов союзника +10%. Исследования +10%. Стоимость: 1200 золота.	false
+building_culture_variants_name_he_pod_heroes_3he_faction_hero_empire	Зал Легенд	false
+building_short_description_texts_text_he_pod_heroes_3	Наши герои: +300 опыта. Опыт отрядов союзника +15%. Исследования +15%. Стоимость: 2000 золота.	false
+building_chains_chain_tooltip_he_pod_heroes	Зал героев	false
+building_chains_encyclopedia_name_he_pod_heroes	Зал героев	false
+building_chains_encyclopedia_description_he_pod_heroes	Здесь герои Империи героев учатся бок о бок с союзными воинами.	false
+agent_actions_localised_action_name_he_agent_action_engineer_hinder_settlement_found_podvorye	Основать подворье	false
+agent_actions_localised_action_description_he_agent_action_engineer_hinder_settlement_found_podvorye	[[col:yellow]]Основывает подворье Империи героев в столице провинции союзника или вассала.[[/col]]\nПодворье усиливает город союзника и даёт нам доход, опыт героев и узел сети троп. В регионах, которые не принадлежат союзнику, подворье не удержится.	false
+effects_description_he_effect_agent_action_enable_engineer_found_podvorye	Мастер-инженеры могут основывать [[col:yellow]]подворья[[/col]] в городах союзников	false
+effect_bundles_localised_title_he_bundle_podvorye_feature	Подворья Империи героев	false
+effect_bundles_localised_description_he_bundle_podvorye_feature	Мастер-инженеры основывают подворья — подгорода в столицах провинций союзников и вассалов.	false
+dilemmas_localised_title_he_dilemma_found_podvorye	Основать подворье	false
+dilemmas_localised_description_he_dilemma_found_podvorye	Наш герой пользуется доверием союзника и может основать здесь подворье — подгород Империи героев.\n\nПодворье усиливает город союзника: экономику, оборону, мобильность и снабжение его армий, — а нам приносит доход, опыт героев и узел сети троп.\n\nСтоимость основания: 1500 золота.	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_found_podvoryeFIRST	Основать подворье	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_found_podvoryeFIRST	Заплатить 1500 золота и открыть 5 слотов подворья.	false
+cdir_events_dilemma_choice_details_localised_choice_title_he_dilemma_found_podvoryeSECOND	Не сейчас	false
+cdir_events_dilemma_choice_details_localised_choice_label_he_dilemma_found_podvoryeSECOND	Предложение повторится не раньше чем через 5 ходов.	false
