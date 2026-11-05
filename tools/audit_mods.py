@@ -111,6 +111,15 @@ def main():
         for r in mod_rows.get("building_culture_variants_tables", []):
             if r["icon"] and r["icon"] not in icons:
                 warnings.append("%s: building icon %s is not used by any vanilla building" % (mod, r["icon"]))
+        # a faction/culture building set REPLACES the broader one, so it must be a full set
+        chains = {}
+        for r in game_rows("building_chain_availability_sets_tables") + mod_rows.get("building_chain_availability_sets_tables", []):
+            chains.setdefault(r["id"], set()).add(r["building_chain"])
+        for r in mod_rows.get("building_chain_availabilities_tables", []):
+            n = len(chains.get(r["set_id"], ()))
+            if n < 50:
+                errors.append("%s: building set %s has only %d chains but is assigned to %s - it would replace the "
+                              "whole culture building set" % (mod, r["set_id"], n, r["faction"] or r["sub_culture"] or r["culture"]))
         agents = {r["agent"] for r in game_rows("faction_agent_permitted_subtypes_tables")}
         for r in mod_rows.get("agent_actions_tables", []):
             if r["agent"] not in agents:

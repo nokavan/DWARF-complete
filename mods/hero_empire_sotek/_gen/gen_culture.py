@@ -50,7 +50,14 @@ SKIP = {
     "cdir_events_mission_option_junctions_tables",
     # a cloned art set id would have no character arts behind it
     "campaign_character_art_sets_tables",
+    # building availability is built explicitly below (one full set per culture)
+    "building_chain_availabilities_tables",
 }
+# The engine uses ONE availability set per faction; a faction-specific set REPLACES the culture set
+# (vanilla faction sets such as wh3_dlc29_vmp_neferata are full copies). So the culture gets its own
+# full set: a copy of the dwarf set. gen_data.py adds the podvorye chains to the same set id.
+AVAIL_SET = "he_bas_hero_empire"
+OLD_AVAIL_SET = "wh_main_bas_dwf"
 CRITERIA_PREFIX = "campaign_group_member_criteria_"
 
 
@@ -277,7 +284,21 @@ def main():
             loc_copy(t, r, nr)
             stats[t] = stats.get(t, 0) + 1
 
-    # ---------------------------------------------------------------- 5. tech tree: deep copy of the dwarf node set
+    # ---------------------------------------------------------------- 5. building availability set
+    t = "building_chain_availability_set_ids_tables"
+    out.add(t, tables[t]["version"], [n for n, _, _ in fields(t)], {"id": AVAIL_SET})
+    t = "building_chain_availabilities_tables"
+    out.add(t, tables[t]["version"], [n for n, _, _ in fields(t)],
+            {"set_id": AVAIL_SET, "culture": NEW_CUL, "faction": "", "id": AVAIL_SET, "sub_culture": NEW_SUB, "campaign": ""})
+    t = "building_chain_availability_sets_tables"
+    n_chains = 0
+    for r in tables[t]["rows"]:
+        if r["id"] == OLD_AVAIL_SET:
+            out.add(t, tables[t]["version"], [n for n, _, _ in fields(t)], {"building_chain": r["building_chain"], "id": AVAIL_SET})
+            n_chains += 1
+    stats[t] = n_chains
+
+    # ---------------------------------------------------------------- 6. tech tree: deep copy of the dwarf node set
     sets = [r for r in tables["technology_node_sets_tables"]["rows"] if r["culture"] == OLD_CUL or r["subculture"] == OLD_SUB]
     node_map = {}
     set_map = {}

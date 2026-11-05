@@ -15,7 +15,7 @@ FACTION = "wh2_main_dwf_spine_of_sotek_dwarfs"
 SLOT_TEMPLATE = "he_pod_slot"
 SLOT_SET = "he_slot_set_podvorye"
 CHAIN_SET = "he_pod_chain_set"
-AVAIL_SET = "he_bas_sotek"
+AVAIL_SET = "he_bas_hero_empire"   # culture building set, defined by gen_culture.py
 SLOT_COUNT = 5
 # slot_set_types (vanilla): VAMPIRE_COVEN is the type of Neferata's covens, which also live in allied regions.
 SLOT_SET_TYPE = "VAMPIRE_COVEN"
@@ -178,9 +178,6 @@ def main():
         "display_tooltip", "building_frame_override"], variants)
     db("building_effects_junction_tables", 0,
        ["building", "effect", "effect_scope", "value", "value_damaged", "value_ruined", "context_requirement"], effects)
-    db("building_chain_availability_set_ids_tables", 0, ["id"], [[AVAIL_SET]])
-    db("building_chain_availabilities_tables", 1, ["set_id", "culture", "faction", "id", "sub_culture", "campaign"],
-       [[AVAIL_SET, "", FACTION, AVAIL_SET + "_spine", "", ""]])
     db("building_chain_availability_sets_tables", 0, ["building_chain", "id"], [[chain(c), AVAIL_SET] for c in CHAINS])
 
     # founding dilemma
