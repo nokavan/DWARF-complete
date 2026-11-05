@@ -1,12 +1,4 @@
 culture	faction	remove	set	subculture	id
 #faction_set_items_tables;1;db/faction_set_items_tables/!he_culture
-he_hero_empire		false	wh3_dlc25_nur_chieftain_battle_cultures_castellan		151361053
 		false	hostile_slot_factions	he_sc_hero_empire	359151840
-he_hero_empire		false	faction_set_civil		362136978
-he_hero_empire		false	anc_set_exclusive_dwarfs		291874753
-he_hero_empire		false	wh3_dlc25_emp_electoral_machination_target_factions		235603734
-he_hero_empire		false	anc_set_multi_kislev_norsca_bretonnia_chaos_dwarfs_empire_vampire_counts		132577751
-he_hero_empire		true	all_except_khorne_dwarfs_no_valkia		255251161
 		false	FavouredCorruptionNone	he_sc_hero_empire	120802343
-he_hero_empire		false	anc_set_multi_kislev_bretonnia_dwarfs_empire_greenskins		356667860
-he_hero_empire		true	all_except_khorne_dwarfs		221549442

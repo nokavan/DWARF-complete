@@ -3,7 +3,7 @@
 | Мод | Папка | Статус |
 |---|---|---|
 | Древние Родословные Гномов | [`mods/dwf_ancient_lineages`](mods/dwf_ancient_lineages) | играбелен, ждёт теста в игре |
-| Империя героев (Хребет Сотека): своя культура и Подворья | [`mods/hero_empire_sotek`](mods/hero_empire_sotek) | прототип, ждёт теста в игре ([описание](mods/hero_empire_sotek/README.md)) |
+| Империя героев (Хребет Сотека): своя подкультура и Подворья | [`mods/hero_empire_sotek`](mods/hero_empire_sotek) | прототип, ждёт теста в игре ([описание](mods/hero_empire_sotek/README.md)) |
 
 Все `.pack` собираются автоматически: **[Releases → latest](../../releases/tag/latest)**.
 

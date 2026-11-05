@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """
-Generates the new culture "Империя героев" for wh2_main_dwf_spine_of_sotek_dwarfs from the ORIGINAL game data.
+Generates the SUBCULTURE "Империя героев" (inside the dwarf culture) for wh2_main_dwf_spine_of_sotek_dwarfs
+from the ORIGINAL game data.
 
   python3 -I mods/hero_empire_sotek/_gen/gen_culture.py --db db.pack --loc local_ru.pack --schema schema_wh3.ron
 
-Stage 1 strategy ("dwarf-based culture"):
-  * new culture he_hero_empire + subculture he_sc_hero_empire;
-  * the faction row of Spine of Sotek is overridden to use the new subculture;
-  * every game row that grants something to the dwarf culture/subculture (building availability,
-    building names, agent art, diplomacy relations, UI features, campaign features ...) is cloned for the
-    new culture, so the faction keeps working. Later stages replace dwarf content with our own.
+Strategy (decided after the in-game test): a new SUBCULTURE he_sc_hero_empire inside the dwarf culture,
+like Mixer's own factions. Mixer's startpos stores the faction's tech tree as the node set key "dwf_mil",
+which the game only accepts for the dwarf CULTURE; Forge, Underdeeps and runes are also culture-bound.
+Keeping the culture keeps all of that working without patching CA scripts.
+  * subculture he_sc_hero_empire (culture wh_main_dwf_dwarfs); the faction row uses it;
+  * every row granting something to the dwarf SUBCULTURE is cloned for the new subculture
+    (rows granting to the dwarf culture already apply). Later stages replace dwarf content with our own.
   * campaign-group members can only hold ONE culture/subculture criterion, so members are cloned
     (member -> member_he, all criteria copied) and the clone is added to the same groups.
 
@@ -33,7 +35,7 @@ FILE = "!he_culture"
 
 FACTION = "wh2_main_dwf_spine_of_sotek_dwarfs"
 OLD_CUL, OLD_SUB = "wh_main_dwf_dwarfs", "wh_main_sc_dwf_dwarfs"
-NEW_CUL, NEW_SUB = "he_hero_empire", "he_sc_hero_empire"
+NEW_CUL, NEW_SUB = OLD_CUL, "he_sc_hero_empire"   # culture stays dwarf
 SUFFIX = "_he"
 
 CULTURE_NAME = "Империя героев"
@@ -101,19 +103,12 @@ def sub(v):
 def sub_row(row, culture_refs):
     """Subculture key is unique -> replaced in any field. The culture key equals a FACTION key
     (wh_main_dwf_dwarfs = Karaz-a-Karak), so it is replaced only in fields referencing cultures."""
-    out = {}
-    for k, v in row.items():
-        if v == OLD_SUB:
-            out[k] = NEW_SUB
-        elif v == OLD_CUL and k in culture_refs:
-            out[k] = NEW_CUL
-        else:
-            out[k] = v
-    return out
+    return {k: (NEW_SUB if v == OLD_SUB else v) for k, v in row.items()}
 
 
 def touches(row, culture_refs):
-    return any(v == OLD_SUB or (v == OLD_CUL and k in culture_refs) for k, v in row.items())
+    """Only rows bound to the dwarf SUBCULTURE need a clone; culture-bound rows already apply to us."""
+    return any(v == OLD_SUB for v in row.values())
 
 
 def new_int(seed, existing):
@@ -202,23 +197,18 @@ def main():
             if ok in loc:
                 out.loc["%s_%s_%s" % (base, name, new_k)] = loc[ok]
 
-    # ---------------------------------------------------------------- 1. culture + subculture
-    for t, src_key, field in (("cultures_tables", OLD_CUL, "key"), ("cultures_subcultures_tables", OLD_SUB, "subculture")):
-        rows = tables[t]["rows"]
-        existing = {r["index"] for r in rows}
-        old = next(r for r in rows if r[field] == src_key)
-        new = {k: sub(v) for k, v in old.items()}
-        new[field] = NEW_CUL if t == "cultures_tables" else NEW_SUB
-        new["index"] = new_int(t + NEW_CUL, existing)
-        out.add(t, tables[t]["version"], [n for n, _, _ in fields(t)], new)
-    for prefix in ("cultures_name", "cultures_subcultures_name"):
-        out.loc["%s_%s" % (prefix, NEW_CUL if prefix == "cultures_name" else NEW_SUB)] = CULTURE_NAME
-    # copy any other culture/subculture loc fields (descriptions etc.)
-    for k, v in loc.items():
-        for old, new in ((OLD_SUB, NEW_SUB), (OLD_CUL, NEW_CUL)):
-            if k.startswith(("cultures_", "cultures_subcultures_")) and k.endswith("_" + old):
-                nk = k[: -len(old)] + new
-                out.loc.setdefault(nk, v)
+    # ---------------------------------------------------------------- 1. subculture (culture stays dwarf)
+    t = "cultures_subcultures_tables"
+    rows = tables[t]["rows"]
+    old = next(r for r in rows if r["subculture"] == OLD_SUB)
+    new = dict(old)
+    new["subculture"] = NEW_SUB
+    new["index"] = new_int(t + NEW_SUB, {r["index"] for r in rows})
+    out.add(t, tables[t]["version"], [n for n, _, _ in fields(t)], new)
+    out.loc["cultures_subcultures_name_" + NEW_SUB] = CULTURE_NAME
+    for k, v in loc.items():   # other subculture loc fields (descriptions etc.)
+        if k.startswith("cultures_subcultures_") and k.endswith("_" + OLD_SUB):
+            out.loc.setdefault(k[: -len(OLD_SUB)] + NEW_SUB, v)
 
     # ---------------------------------------------------------------- 2. faction row override
     t = "factions_tables"
@@ -296,41 +286,7 @@ def main():
             n_chains += 1
     stats[t] = n_chains
 
-    # ---------------------------------------------------------------- 6. tech tree: deep copy of the dwarf node set
-    sets = [r for r in tables["technology_node_sets_tables"]["rows"] if r["culture"] == OLD_CUL or r["subculture"] == OLD_SUB]
-    node_map = {}
-    set_map = {}
-    for r in sets:
-        nr = sub_row(r, {"culture"})
-        nr["subculture"] = NEW_SUB   # custom cultures in Mixer fill culture AND subculture
-        nr["key"] = r["key"] + SUFFIX
-        set_map[r["key"]] = nr["key"]
-        out.add("technology_node_sets_tables", tables["technology_node_sets_tables"]["version"],
-                [n for n, _, _ in fields("technology_node_sets_tables")], nr)
-        loc_copy("technology_node_sets_tables", r, nr)
-    for r in tables["technology_nodes_tables"]["rows"]:
-        if r["technology_node_set"] in set_map:
-            node_map[r["key"]] = r["key"] + SUFFIX
-    tech_refs = {"technology_nodes_tables": node_map, "technology_node_sets_tables": set_map}
-    for t, data in sorted(tables.items()):
-        fl = meta[t][str(data["version"])]
-        ref_fields = [(n, ref[0]) for n, ref in fl.get("refs", [])]
-        if not ref_fields:
-            continue
-        hdr = [n for n, _, _ in fields(t)]
-        for r in data["rows"]:
-            hit = [(n, rt) for n, rt in ref_fields if r[n] in tech_refs[rt]]
-            if not hit and not (t == "technology_nodes_tables" and r["key"] in node_map):
-                continue
-            nr = dict(r)
-            for n, rt in ref_fields:
-                if r[n] in tech_refs[rt]:
-                    nr[n] = tech_refs[rt][r[n]]
-            if t == "technology_nodes_tables":
-                nr["key"] = node_map[r["key"]]
-            out.add(t, data["version"], hdr, nr)
-            loc_copy(t, r, nr)
-            stats[t] = stats.get(t, 0) + 1
+    # Tech tree: NOT cloned. The startpos assigns node set "dwf_mil" by key; it applies to the dwarf culture.
 
     # ---------------------------------------------------------------- write
     for t in list(out.tables):

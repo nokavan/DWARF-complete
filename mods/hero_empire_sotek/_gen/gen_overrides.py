@@ -24,9 +24,9 @@ NEEDLE = ':culture() == "wh_main_dwf_dwarfs"'
 REPLACEMENT = ":culture():he_dwarfish()"
 
 # vanilla path -> expected number of dwarf-culture checks
-FILES = {
-    "script/campaign/wh3_campaign_underdeep.lua": 9,   # Underdeeps (Глубины)
-}
+# Empty since the faction became a dwarf SUBCULTURE: CA's dwarf-culture checks already match it.
+# (Was: "script/campaign/wh3_campaign_underdeep.lua": 9 for a separate culture.)
+FILES = {}
 
 HEADER = """-- =====================================================================================
 -- PATCHED COPY of CA's %(path)s  (vanilla sha1 %(sha)s)

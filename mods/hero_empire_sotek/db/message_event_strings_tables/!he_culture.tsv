@@ -1,3 +1,0 @@
-event	optional_campaign_key	culture	text	image	icon	sound_event	optional_subculture
-#message_event_strings_tables;3;db/message_event_strings_tables/!he_culture
-character_dies_commanding_replace		he_hero_empire	roman_character_dies_commanding_replace	dwf_funeral	event_gen_news_neutral.png	UI_CAM_POPUP_Message_Event_Neutral	
