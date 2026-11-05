@@ -49,6 +49,8 @@ agent_actions_localised_action_name_he_agent_action_engineer_hinder_settlement_f
 agent_actions_localised_action_description_he_agent_action_engineer_hinder_settlement_found_podvorye	[[col:yellow]]Основывает подворье Хребта Сотека в столице провинции союзника или вассала.[[/col]]\nПодворье усиливает город союзника и даёт нам доход, опыт героев и узел сети троп. В регионах, которые не принадлежат союзнику, подворье не удержится.	false
 effects_description_he_effect_agent_action_enable_engineer_found_podvorye	Мастер-инженеры могут основывать [[col:yellow]]подворья[[/col]] в городах союзников	false
 effect_bundles_localised_title_he_bundle_podvorye_feature	Подворья Хребта Сотека	false
+effect_bundles_localised_title_he_bundle_faction_identity	Империя героев	false
+effect_bundles_localised_description_he_bundle_faction_identity	Империя героев не ведёт счёт эпохам Возмездия: циклы Книги Обид для неё не действуют.	false
 effect_bundles_localised_description_he_bundle_podvorye_feature	Мастер-инженеры основывают подворья — подгорода в столицах провинций союзников и вассалов.	false
 dilemmas_localised_title_he_dilemma_found_podvorye	Основать подворье	false
 dilemmas_localised_description_he_dilemma_found_podvorye	Наш герой пользуется доверием союзника и может основать здесь подворье — подгород Хребта Сотека.\n\nПодворье усиливает город союзника: экономику, оборону, мобильность и снабжение его армий, — а нам приносит доход, опыт героев и узел сети троп.\n\nСтоимость основания: 1500 золота.	false

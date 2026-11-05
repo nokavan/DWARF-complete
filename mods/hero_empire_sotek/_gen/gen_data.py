@@ -108,6 +108,7 @@ ACTION = "he_agent_action_engineer_hinder_settlement_found_podvorye"
 ACTION_RESULT = "he_agent_action_hinder_settlement_success_found_podvorye"
 ENABLE_EFFECT = "he_effect_agent_action_enable_engineer_found_podvorye"
 FEATURE_BUNDLE = "he_bundle_podvorye_feature"
+IDENTITY_BUNDLE = "he_bundle_faction_identity"
 FOUND_COST = 1500
 
 
@@ -210,10 +211,15 @@ def main():
     db("effect_bundles_tables", 4,
        ["key", "localised_description", "localised_title", "bundle_target", "priority", "ui_icon", "is_global_effect",
         "show_in_3d_space", "owner_only"],
-       [[FEATURE_BUNDLE, "", "", "faction", 1, "he_podvorye.png", "false", "false", "true"]])
+       [[FEATURE_BUNDLE, "", "", "faction", 1, "he_podvorye.png", "false", "false", "true"],
+        [IDENTITY_BUNDLE, "", "", "faction", 1, "he_podvorye.png", "false", "false", "true"]])
     db("effect_bundles_to_effects_junctions_tables", 3,
        ["effect_bundle_key", "effect_key", "effect_scope", "value", "advancement_stage"],
-       [[FEATURE_BUNDLE, ENABLE_EFFECT, "faction_to_character_own", "1.0", "start_turn_completed"]])
+       [[FEATURE_BUNDLE, ENABLE_EFFECT, "faction_to_character_own", "1.0", "start_turn_completed"],
+        # CA's own switch (used by the Underdeep building "grudges_2_a"): bonus value dwf_grudge_feature_off
+        # stops the Grudge cycle timer -> no "Era of Reckoning" (Эра Возмездия)
+        [IDENTITY_BUNDLE, "wh3_dlc25_effect_dwf_book_of_grudges_disable", "faction_to_faction_own_unseen", "1.0",
+         "start_turn_completed"]])
     loc += [
         ("agent_actions_localised_action_name_" + ACTION, "Основать подворье"),
         ("agent_actions_localised_action_description_" + ACTION,
@@ -222,6 +228,9 @@ def main():
          "В регионах, которые не принадлежат союзнику, подворье не удержится."),
         ("effects_description_" + ENABLE_EFFECT, "Мастер-инженеры могут основывать [[col:yellow]]подворья[[/col]] в городах союзников"),
         ("effect_bundles_localised_title_" + FEATURE_BUNDLE, "Подворья Хребта Сотека"),
+        ("effect_bundles_localised_title_" + IDENTITY_BUNDLE, "Империя героев"),
+        ("effect_bundles_localised_description_" + IDENTITY_BUNDLE,
+         "Империя героев не ведёт счёт эпохам Возмездия: циклы Книги Обид для неё не действуют."),
         ("effect_bundles_localised_description_" + FEATURE_BUNDLE,
          "Мастер-инженеры основывают подворья — подгорода в столицах провинций союзников и вассалов."),
     ]
