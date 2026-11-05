@@ -5,7 +5,7 @@ Builds dist/<mod>.pack for every mod folder in mods/ (or only the ones given).
   mods/<mod>/db/<table>/<file>.tsv     -> binary DB table (version + pack path from the TSV '#' line)
   mods/<mod>/text/**/<file>.loc.tsv    -> binary .loc
   everything else under mods/<mod>/    -> copied as is (scripts, images, ...)
-  files/folders starting with '_' or '.' and README.md are skipped (generators, notes).
+  files/folders starting with "_" or "." and *.md files are skipped (generators, notes).
 
 Every table/loc is decoded back and re-encoded; the bytes must match exactly.
 
@@ -28,7 +28,7 @@ def build(mod_dir, name, schema, out_dir):
     for dirpath, dirnames, names in os.walk(mod_dir):
         dirnames[:] = [d for d in dirnames if not d.startswith(("_", "."))]
         for n in sorted(names):
-            if n.startswith(("_", ".")) or n.lower() == "readme.md":
+            if n.startswith(("_", ".")) or n.lower().endswith(".md"):
                 continue
             full = os.path.join(dirpath, n)
             rel = os.path.relpath(full, mod_dir).replace(os.sep, "/")
