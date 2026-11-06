@@ -2,7 +2,7 @@
 """
 Checks every mod in mods/ against the ORIGINAL game data (db.pack from the private "game-data" release).
 
-  python3 tools/audit_mods.py DB_PACK SCHEMA_RON
+  python3 tools/audit_mods.py DB_PACK SCHEMA_RON [MODS_ROOT ...]
 
 Checks:
   * every mod table uses a version that the live game uses;
@@ -60,9 +60,18 @@ def main():
         return versions[table]
 
     errors, warnings = [], []
-    for mod_dir in sorted(glob.glob(os.path.join(ROOT, "mods", "*"))):
+    roots = sys.argv[3:] or [os.path.join(ROOT, "mods")]
+    mod_dirs = sorted(d for r in roots for d in glob.glob(os.path.join(r, "*")) if os.path.isdir(d))
+    for mod_dir in mod_dirs:
         mod = os.path.basename(mod_dir)
         mod_rows = {}
+        # records defined by required mods (e.g. MIXER): "table<TAB>field<TAB>value" lines
+        external = {}
+        ext_file = os.path.join(mod_dir, "_external_keys.tsv")
+        if os.path.exists(ext_file):
+            for line in open(ext_file, encoding="utf-8"):
+                t, fld, val = line.rstrip("\n").split("\t")
+                external.setdefault((t, fld), set()).add(val)
         for f in glob.glob(os.path.join(mod_dir, "db", "*", "*.tsv")):
             table, version, _, _, rows = packlib.read_tsv(f)
             mod_rows.setdefault(table, []).extend(rows)
@@ -102,7 +111,7 @@ def main():
         for r in mod_rows.get("pooled_resource_factor_junctions_tables", []):
             if r["resource"] not in keyset("pooled_resources_tables", "key"):
                 errors.append("%s: unknown pooled resource %s" % (mod, r["resource"]))
-        factions = keyset("factions_tables", "key")
+        factions = keyset("factions_tables", "key") | external.get(("factions_tables", "key"), set())
         for table, field in (("building_culture_variants_tables", "faction"), ("building_chain_availabilities_tables", "faction")):
             for r in mod_rows.get(table, []):
                 if r[field] and r[field] not in factions:
@@ -143,13 +152,13 @@ def main():
                 vals = {r[field] for r in mod_rows.get(table, []) if field in r}
                 if table in db:
                     vals |= {r[field] for r in game_rows(table) if field in r}
-                ref_index[(table, field)] = vals
+                ref_index[(table, field)] = vals | external.get((table, field), set())
             return ref_index[(table, field)]
 
         broken = 0
         for t, rows in mod_rows.items():
             for name, _, _, ref in meta[t][str(mod_versions[t])]["fields"]:
-                if not ref or ref[0] not in db and ref[0] not in mod_rows:
+                if not ref or ref[0] not in schema or (ref[0] not in db and ref[0] not in mod_rows):
                     continue
                 known = ref_values(*ref)
                 for r in rows:

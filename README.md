@@ -3,6 +3,7 @@
 | Мод | Папка | Статус |
 |---|---|---|
 | Древние Родословные Гномов | [`mods/dwf_ancient_lineages`](mods/dwf_ancient_lineages) | играбелен, ждёт теста в игре |
+| Железный Караван для гномов | [`converters/iron_caravan_dwf`](converters/iron_caravan_dwf) | этап 1 готов, ждёт теста в игре |
 | Империя героев (отдельная фракция) | [`mods/hero_empire`](mods/hero_empire) | таблицы готовы, нужна стартовая позиция ([описание](mods/hero_empire/README.md)) |
 
 Все `.pack` собираются автоматически: **[Releases → latest](../../releases/tag/latest)**.

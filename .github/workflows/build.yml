@@ -58,6 +58,23 @@ jobs:
       - name: Build packs
         run: python3 tools/build_pack.py
 
+      - name: Iron Caravan for dwarfs (converted from the private source pack)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          DB=$(find /tmp/game -name db.pack 2>/dev/null | head -1)
+          if [ -z "$DB" ] || [ ! -f /tmp/schema_wh3.ron ]; then echo "no game data, skipped"; exit 0; fi
+          gh release download game-data -D /tmp/game --clobber -p 'iron_caravan_draft.pack' \
+            || { echo "::warning::iron_caravan_draft.pack is not in game-data, skipped"; exit 0; }
+          python3 -I converters/iron_caravan_dwf/convert.py --src /tmp/game/iron_caravan_draft.pack \
+            --game-db "$DB" --schema /tmp/schema_wh3.ron --out /tmp/conv/iron_caravan_dwf
+          find /tmp/conv -name '*.lua' -print0 | xargs -0 -n1 luac5.1 -p
+          python3 tools/audit_mods.py "$DB" /tmp/schema_wh3.ron /tmp/conv > /tmp/audit_conv.txt 2>&1; rc=$?
+          cat /tmp/audit_conv.txt
+          if [ $rc -ne 0 ]; then echo "::error title=audit iron_caravan_dwf::$(tail -c 3000 /tmp/audit_conv.txt | tr '\n' '|')"; exit $rc; fi
+          python3 tools/build_pack.py --mods-root /tmp/conv --ron /tmp/schema_wh3.ron | tail -2
+          rm -f /tmp/game/iron_caravan_draft.pack
+
       - name: Assembly Kit patch for the Hero Empire startpos
         run: |
           AK=$(find /tmp/game -path '*db/start_pos_factions.xml' -printf '%h\n' 2>/dev/null | head -1)

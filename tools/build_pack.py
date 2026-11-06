@@ -9,7 +9,7 @@ Builds dist/<mod>.pack for every mod folder in mods/ (or only the ones given).
 
 Every table/loc is decoded back and re-encoded; the bytes must match exactly.
 
-Usage: python3 tools/build_pack.py [mod ...] [--out dist]
+Usage: python3 tools/build_pack.py [mod ...] [--out dist] [--mods-root DIR] [--ron schema_wh3.ron]
 """
 import argparse
 import json
@@ -82,10 +82,16 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mods", nargs="*")
     ap.add_argument("--out", default=os.path.join(ROOT, "dist"))
+    ap.add_argument("--mods-root", default=os.path.join(ROOT, "mods"), help="folder with mod folders")
+    ap.add_argument("--ron", help="full RPFM schema_wh3.ron (for mods that use tables missing in schema_wh3.json)")
     args = ap.parse_args()
-    with open(os.path.join(ROOT, "tools", "schema_wh3.json"), encoding="utf-8") as f:
-        schema = json.load(f)
-    mods_root = os.path.join(ROOT, "mods")
+    if args.ron:
+        from game_data import load_schema
+        schema = {t: {v: [list(f) for f in fs] for v, fs in d.items()} for t, d in load_schema(args.ron).items()}
+    else:
+        with open(os.path.join(ROOT, "tools", "schema_wh3.json"), encoding="utf-8") as f:
+            schema = json.load(f)
+    mods_root = args.mods_root
     names = args.mods or sorted(d for d in os.listdir(mods_root) if os.path.isdir(os.path.join(mods_root, d)))
     for name in names:
         print("== " + name)
