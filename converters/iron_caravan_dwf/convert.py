@@ -125,7 +125,8 @@ DWARF_MILITARY_CHAINS = [
 ]
 COPY_FACTION_HEROES_FROM = "wh_main_dwf_karak_azul"
 # records that exist in MIXER (a required mod), not in the base game
-EXTERNAL = {("factions_tables", "key"): {NEW_FACTION}, ("frontend_faction_leaders_tables", "key"): {NEW_FACTION}}
+EXTERNAL = {("factions_tables", "key"): {NEW_FACTION}, ("frontend_faction_leaders_tables", "key"): {NEW_FACTION},
+            ("agent_subtypes_tables", "key"): {"mixer_dummy"}}
 
 VALUE_MAP = dict(UNITS)
 VALUE_MAP.update(SUBTYPES)
@@ -310,6 +311,13 @@ def main():
         if r["effect"] == "ic_enclave_display_raw":
             r["effect"] = "wh_main_effect_economy_gdp_other"
             r["effect_scope"] = "foreign_building_to_foreign_building_own"
+
+    # MIXER starts Dain's Expedition as a Spirit of Grungni airship HORDE (Lost Slavers start as a normal
+    # army). Turning that starting general into Rykarth crashes the campaign start, so the MIXER general
+    # stays; the caravan script removes it and creates Rykarth with his convoy near Ekrund.
+    for r in rows("frontend_faction_leaders_tables"):
+        r["agent_subtype_record"] = "mixer_dummy"
+        r["voiceover"] = "wh_main_vo_actor_Dwarf_Thane1"
 
     # ---------------------------------------------------------------- 4. heroes of the faction
     permitted = rows("faction_agent_permitted_subtypes_tables")

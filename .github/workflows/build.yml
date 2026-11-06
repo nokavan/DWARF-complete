@@ -73,6 +73,11 @@ jobs:
           cat /tmp/audit_conv.txt
           if [ $rc -ne 0 ]; then echo "::error title=audit iron_caravan_dwf::$(tail -c 3000 /tmp/audit_conv.txt | tr '\n' '|')"; exit $rc; fi
           python3 tools/build_pack.py --mods-root /tmp/conv --ron /tmp/schema_wh3.ron | tail -2
+          # crash test pack: same tables, campaign scripts and script UI images removed (MIXER registration kept)
+          T=/tmp/conv_test/iron_caravan_dwf_test_noscript
+          mkdir -p /tmp/conv_test && cp -r /tmp/conv/iron_caravan_dwf "$T"
+          rm -rf "$T/script/campaign" "$T/ui/iron_caravan" "$T/ui/eventpics"
+          python3 tools/build_pack.py --mods-root /tmp/conv_test --ron /tmp/schema_wh3.ron | tail -2
           rm -f /tmp/game/iron_caravan_draft.pack
 
       - name: Assembly Kit patch for the Hero Empire startpos
