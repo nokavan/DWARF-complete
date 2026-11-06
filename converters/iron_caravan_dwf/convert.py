@@ -98,8 +98,11 @@ EFFECTS = {
 }
 # Chaos Dwarf hero types the caravan uses -> dwarf hero types with the same role
 SUBTYPES = {
-    "wh3_dlc23_chd_overseer": "wh_main_dwf_lord",
-    "wh3_dlc23_chd_lord_convoy_overseer": "wh_main_dwf_lord",
+    # the generic convoy lord gets its own subtype (a copy of the caravan's castellan lord): mapping it onto
+    # wh_main_dwf_lord made every vanilla dwarf lord a convoy lord, and MIXER's starting general (a vanilla
+    # dwarf lord on a Spirit of Grungni horde) no longer matched his force -> horde destroyed at load
+    "wh3_dlc23_chd_overseer": "ic_overseer_lord",
+    "wh3_dlc23_chd_lord_convoy_overseer": "ic_overseer_lord",
     "wh3_dlc23_chd_infernal_castellan": "wh_main_dwf_master_engineer",
     "wh3_dlc23_chd_bull_centaur_taurruk": "wh_main_dwf_thane",
 }
@@ -118,6 +121,7 @@ ART = {  # IC art set -> vanilla dwarf art sets to cycle through
                              "wh3_dlc25_art_set_dwf_daemon_slayer_03"],
 }
 SKULLCANNON = "ic_cha_rykarth_skullcannon"
+CLONE_FROM, CLONE_TO = "ic_castellan_lord", "ic_overseer_lord"
 # standard dwarf military chains allowed in every caravan workshop slot (unit compatibility)
 DWARF_MILITARY_CHAINS = [
     "wh_main_DWARFS_barracks", "wh_main_DWARFS_smiths", "wh_main_DWARFS_slayers", "wh_main_DWARFS_workshops",
@@ -374,6 +378,18 @@ def main():
         if r["names_group"] == "names_chd_bull_centaurs":
             r["names_group"] = ""
 
+    # new subtype ic_overseer_lord = copy of ic_castellan_lord (rows, art sets, unit, skills)
+    for t, d in tables.items():
+        if t in ("campaign_group_member_criteria_agent_subtypes_tables",):
+            continue
+        clones = [{k: v.replace(CLONE_FROM, CLONE_TO) for k, v in r.items()}
+                  for r in d["rows"] if any(CLONE_FROM in v for v in r.values())]
+        for c in clones:
+            for k in ("id", "key") if t in ("campaign_character_arts_tables", "building_units_allowed_tables") else ():
+                if k in c and c[k].isdigit():
+                    c[k] = str(int(c[k]) + 50000)
+        d["rows"].extend(clones)
+
     # ---------------------------------------------------------------- 6. unit compatibility: dwarf military chains in caravan slots
     permitted_chains = rows("slot_template_permitted_building_chains_tables")
     secondary = sorted({r["slot_template"] for r in permitted_chains
@@ -468,6 +484,7 @@ def main():
     for name, data in raw_files.items():
         if name.startswith("text/") and name.endswith(".loc"):
             loc = packlib.decode_loc(data)
+            loc += [dict(r, key=r["key"].replace(CLONE_FROM, CLONE_TO)) for r in loc if CLONE_FROM in r["key"]]
             data = packlib.encode_loc([{"key": r["key"].replace(OLD_FACTION, NEW_FACTION),
                                         "text": r["text"].replace("\n", "\\n").replace("\t", "\\t"),
                                         "tooltip": "true" if r["tooltip"] else "false"} for r in loc])
