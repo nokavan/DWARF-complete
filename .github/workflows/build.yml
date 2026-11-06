@@ -83,6 +83,12 @@ jobs:
           rm -rf "$T2/ui/iron_caravan" "$T2/ui/eventpics"
           python3 tools/build_pack.py --mods-root /tmp/conv_test --ron /tmp/schema_wh3.ron | tail -2
           python3 tools/build_pack.py --mods-root /tmp/conv_test2 --ron /tmp/schema_wh3.ron | tail -2
+          # add-on for the ORIGINAL caravan (Chaos Dwarfs on Lost Slavers): dwarf units and heroes join it
+          python3 -I converters/iron_caravan_dwarfs_addon/build.py --src /tmp/game/iron_caravan_draft.pack \
+            --game-db "$DB" --schema /tmp/schema_wh3.ron --out /tmp/conv_addon/iron_caravan_dwarfs_addon
+          find /tmp/conv_addon -name '*.lua' -print0 | xargs -0 -n1 luac5.1 -p
+          python3 tools/audit_mods.py "$DB" /tmp/schema_wh3.ron /tmp/conv_addon || exit 1
+          python3 tools/build_pack.py --mods-root /tmp/conv_addon --ron /tmp/schema_wh3.ron | tail -2
           rm -f /tmp/game/iron_caravan_draft.pack
 
       - name: Assembly Kit patch for the Hero Empire startpos
