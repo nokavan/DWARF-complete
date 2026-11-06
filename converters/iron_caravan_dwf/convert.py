@@ -85,7 +85,8 @@ UNITS = {
     "wh_main_chs_art_hellcannon": "wh_main_dwf_art_cannon",
     "wh3_main_chd_art_hobgob_bolt_thrower": "wh_dlc06_dwf_art_bolt_thrower_0",
 }
-# Chaos Dwarf hero availability -> dwarf hero availability (same buildings, same levels)
+# Combined dwarfs: every building effect below gets a dwarf twin (same building, level, value);
+# the Chaos Dwarf effect stays. Hero availability: castellan -> also engineer, taurruk -> also thane.
 EFFECTS = {
     "wh3_dlc23_effect_enable_recruitment_chd_infernal_castellan": "wh_main_effect_agent_enable_recruitment_engineer",
     "wh3_dlc23_effect_enable_recruitment_chd_bull_centaur_taurruk": "wh_main_effect_agent_enable_recruitment_champion_dwarfs",
@@ -103,9 +104,10 @@ SUBTYPES = {
     # dwarf lord on a Spirit of Grungni horde) no longer matched his force -> horde destroyed at load
     "wh3_dlc23_chd_overseer": "ic_overseer_lord",
     "wh3_dlc23_chd_lord_convoy_overseer": "ic_overseer_lord",
-    "wh3_dlc23_chd_infernal_castellan": "wh_main_dwf_master_engineer",
-    "wh3_dlc23_chd_bull_centaur_taurruk": "wh_main_dwf_thane",
 }
+# Combined dwarfs: Chaos Dwarf heroes stay; these dwarf heroes get the same caravan hero services
+HERO_TWINS = {"wh3_dlc23_chd_infernal_castellan": "wh_main_dwf_master_engineer",
+              "wh3_dlc23_chd_bull_centaur_taurruk": "wh_main_dwf_thane"}
 # custom characters: (vanilla dwarf land unit to copy the model/stats from, vanilla art set prefix)
 CHARACTERS = {
     "ic_cha_rykarth": "wh_main_dwf_cha_lord_0",
@@ -132,8 +134,7 @@ COPY_FACTION_HEROES_FROM = "wh_main_dwf_karak_azul"
 EXTERNAL = {("factions_tables", "key"): {NEW_FACTION}, ("frontend_faction_leaders_tables", "key"): {NEW_FACTION},
             ("agent_subtypes_tables", "key"): {"mixer_dummy"}}
 
-VALUE_MAP = dict(UNITS)
-VALUE_MAP.update(SUBTYPES)
+VALUE_MAP = dict(SUBTYPES)
 VALUE_MAP.update({OLD_FACTION: NEW_FACTION, OLD_LEADER: NEW_LEADER, CHD_SC: DWF_SC})
 
 
@@ -208,9 +209,8 @@ def main():
     removed_skill_sets = [r for r in rows("character_skill_node_sets_tables") if r["agent_subtype_key"] in SUBTYPES]
     drop("character_skill_node_sets_tables", lambda r: r["agent_subtype_key"] in SUBTYPES, "skill trees of Chaos Dwarf heroes")
     # Chaos Dwarf hero types in the faction hero list are replaced by the dwarf list below
-    drop("faction_agent_permitted_subtypes_tables", lambda r: not r["subtype"].startswith("ic_"), "Chaos Dwarf hero types")
-    # UI overrides of vanilla Chaos Dwarf units would leak onto the dwarf units they map to
-    drop("ui_unit_bullet_point_unit_overrides_tables", lambda r: r["unit_key"] in UNITS, "UI overrides of Chaos Dwarf units")
+    drop("faction_agent_permitted_subtypes_tables", lambda r: r["subtype"] in ("wh3_dlc23_chd_overseer_hobgoblin_spawned_army",),
+         "Chaos Dwarf hero types")
     # IC tech tree: its own node set cannot replace the node set saved in MIXER's startpos.
     # The technologies stay (scripts check them); the tree is rebuilt inside the dwarf tree later.
     for t in ("technology_node_sets_tables", "technology_nodes_tables", "technology_node_links_tables",
@@ -237,10 +237,6 @@ def main():
             target = ref[0] if ref else ""
             if target == "agent_subtypes_tables" or (not ref and "subtype" in name):
                 kinds[name] = SUBTYPES
-            elif target in ("main_units_tables", "land_units_tables") or (not ref and "unit" in name):
-                kinds[name] = UNITS
-            elif target == "effects_tables":
-                kinds[name] = EFFECTS
         for r in d["rows"]:
             for k, v in r.items():
                 m = kinds.get(k)
@@ -411,6 +407,37 @@ def main():
             if (set_id, ch) not in in_set:
                 sets.append(dict(sets[0], id=set_id, building_chain=ch))
 
+    # combined dwarfs: every Chaos Dwarf unit row gets a dwarf twin (recruitment, unit sets, effects)
+    used_ids = {}
+    for t, d in tables.items():
+        if t in ("ui_unit_bullet_point_unit_overrides_tables", "main_units_tables", "land_units_tables"):
+            continue
+        unit_fields = [n for n, _, _, ref in fields(t)
+                       if (ref and ref[0] in ("main_units_tables", "land_units_tables")) or (not ref and "unit" in n)]
+        eff_fields = [n for n, _, _, ref in fields(t) if ref and ref[0] == "effects_tables"]
+        id_fields = [n for n, ty, key, ref in fields(t) if key and not ref and n in ("key", "id", "unique_id")]
+        ids = used_ids.setdefault(t, {r[f] for r in d["rows"] for f in id_fields})
+        twins = []
+        for r in d["rows"]:
+            hit = {f: UNITS[r[f]] for f in unit_fields if r.get(f) in UNITS}
+            hit.update({f: EFFECTS[r[f]] for f in eff_fields if r.get(f) in EFFECTS})
+            if not hit:
+                continue
+            c = dict(r, **hit)
+            for f in id_fields:
+                v = c[f]
+                n = (int(v) if v.isdigit() else 0) + 7919
+                while str(n) in ids or not v.isdigit():
+                    if not v.isdigit():
+                        c[f] = v + "_dwf"
+                        break
+                    n += 7919
+                if v.isdigit():
+                    c[f] = str(n % 2147483647)
+                ids.add(c[f])
+            twins.append(c)
+        d["rows"].extend(twins)
+
     # two Chaos Dwarf units can map to one dwarf unit: keep one recruitment row per building
     seen, keep = set(), []
     for r in rows("building_units_allowed_tables"):
@@ -515,13 +542,17 @@ def header_version(data):
 UNIT_WORD = re.compile(r"\b(%s)\b" % "|".join(sorted(map(re.escape, UNITS), key=len, reverse=True)))
 QUOTED = re.compile(r"""(["'])([A-Za-z0-9_]+)\1""")
 
-CONFIG_POST = r"""
+CONFIG_POST_RAW = r"""
 -- ===== Dwarf conversion (generated by converters/iron_caravan_dwf/convert.py) =====
 -- Unit compatibility: nothing is blocked by list. A dwarf faction cannot recruit other races anyway,
 -- and units added by other mods to dwarf buildings must stay available.
 C.blocked_units = {}
--- Chaos Dwarf unit caps do not exist for dwarfs.
-C.capacity = {}
+-- Chaos Dwarf units keep their caps; extra allowance is bought with Oathgold (C.armaments below).
+-- The starting army is dwarf.
+do
+  local map = {%s}
+  for i, key in ipairs(C.starting_army) do C.starting_army[i] = map[key] or key end
+end
 -- Chaos Dwarf resources that dwarfs do not have.
 C.removed_resources = {}
 -- Dwarf runesmiths, runelords and other dwarf heroes are part of the faction, not foreign casters.
@@ -539,6 +570,9 @@ return C
 """
 
 
+CONFIG_POST = CONFIG_POST_RAW.replace("%s", ",".join('["%s"]="%s"' % kv for kv in sorted(UNITS.items())), 1)
+
+
 def patch_lua(name, src):
     crlf = "\r\n" in src
     src = patch_lua_lf(name, src.replace("\r\n", "\n"))
@@ -550,8 +584,13 @@ def patch_lua_lf(name, src):
         v = m.group(2)
         return m.group(1) + VALUE_MAP.get(v, v) + m.group(1)
     src = QUOTED.sub(sub_quoted, src)
-    # unit keys also appear inside comma-joined unit lists
-    src = UNIT_WORD.sub(lambda m: UNITS[m.group(0)], src)
+    if name == "script/iron_caravan/campaign.lua":
+        # commissioned convoys: comma-joined unit lists -> dwarf units
+        src = UNIT_WORD.sub(lambda m: UNITS[m.group(0)], src)
+    if name == "script/iron_caravan/hero_services_config.lua":
+        src = must_replace(src, '["subtypes"]={', '["subtypes"]={' + "".join(
+            '["%s"]="%s",' % (dw, kind) for chd, dw in sorted(HERO_TWINS.items())
+            for kind in [re.search(r'\["%s"\]="([a-z_]+)"' % chd, src).group(1)]))
     src = src.replace("wh3_dlc23_chd_conclave", EMPLOYER)
     src = src.replace(CHD_SC, DWF_SC)
     base = name.split("/")[-1]
