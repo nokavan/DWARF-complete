@@ -382,6 +382,15 @@ def main():
             if (set_id, ch) not in in_set:
                 sets.append(dict(sets[0], id=set_id, building_chain=ch))
 
+    # two Chaos Dwarf units can map to one dwarf unit: keep one recruitment row per building
+    seen, keep = set(), []
+    for r in rows("building_units_allowed_tables"):
+        k = (r["building"], r["unit"], r["faction"])
+        if k not in seen:
+            seen.add(k)
+            keep.append(r)
+    set_rows("building_units_allowed_tables", keep)
+
     # ---------------------------------------------------------------- 7. dedupe + cascade removal of broken references
     for t, d in tables.items():
         seen, out = set(), []
