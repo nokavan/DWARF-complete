@@ -558,6 +558,15 @@ end)
 if not ok then out("[Iron Caravan] could not set the MIXER enable flag: " .. tostring(err)) end
 """ % NEW_FACTION
 
+TRACE_LUA = """function ic_trace(message)
+    pcall(function()
+        local f = io and io.open and io.open('iron_caravan_trace.txt', 'a')
+        if f then f:write(os.date('%H:%M:%S'), ' ', tostring(message), '\\n'); f:close() end
+    end)
+end
+ic_trace('=== campaign script loaded ===')
+"""
+
 UNIT_WORD = re.compile(r"\b(%s)\b" % "|".join(sorted(map(re.escape, UNITS), key=len, reverse=True)))
 QUOTED = re.compile(r"""(["'])([A-Za-z0-9_]+)\1""")
 
@@ -621,6 +630,27 @@ def patch_lua_lf(name, src):
         src = must_replace(src, "{'arms','Armaments','icon_chd_armaments.png'},{'raw','Raw Materials','icon_chd_raw_materials.png'}",
                            "{'arms','Oathgold','icon_oathgold.png'},{'raw','Gold (materials)','icon_income.png'}")
     if base == "campaign.lua" and name.startswith("script/iron_caravan/"):
+        # crash tracing: every step of the first-tick start is written to iron_caravan_trace.txt (game folder),
+        # the file is closed after each line so it survives a hard crash (the game's script log is buffered)
+        src = must_replace(src, "iron_caravan=X\n", "iron_caravan=X\n" + TRACE_LUA)
+        for line in ("function X:initialize()\n",
+                     "    X:install()\n",
+                     "    cm:create_force_with_general(C.faction,table.concat(C.starting_army,','),home:name(),x,y,'general',C.lord,\n",
+                     "        for _,id in ipairs(obsolete) do if id~=cqi then cm:kill_character('character_cqi:'..id,true) end end\n",
+                     "            local hero=cm:create_agent(C.faction,C.hero_type,C.hero,tx,ty,true)\n",
+                     "        self:ensure_convoys()\n",
+                     "        cm:add_building_to_force(army:command_queue_index(),{'ic_convoy_liaison_1','ic_convoy_arsenal_1'})\n",
+                     "        self:create_missions()\n",
+                     "        self:restrictions();self:turn_start()\n"):
+            label = line.strip()[:60].replace("'", "")
+            indent = line[:len(line) - len(line.lstrip())]
+            if line.startswith("function"):
+                src = must_replace(src, line, line + "    ic_trace('%s')\n" % label)
+            elif line.rstrip().endswith(","):  # multi-line call: trace before only
+                src = must_replace(src, line, "%sic_trace('%s')\n%s" % (indent, label, line))
+            else:
+                src = must_replace(src, line, "%sic_trace('%s')\n%s%sic_trace('done: %s')\n" % (indent, label, line, indent, label[:40]))
+        src = must_replace(src, "local function log(message)\n", "local function log(message)\n    ic_trace(message)\n")
         src = must_replace(src, "local function ensure_rykarth_mount(character)\n",
                            "local function ensure_rykarth_mount(character)\n    do return end -- dwarf conversion: no Skullcannon\n")
         src = must_replace(src, "local function pooled(key)\n",
