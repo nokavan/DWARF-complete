@@ -385,8 +385,13 @@ def main():
             permitted_chains.append(dict(tpl_row, chain=ch, chain_set="", remove="false", slot_template=st, super_chain=""))
     sets = rows("building_chain_availability_sets_tables")
     in_set = {(r["id"], r["building_chain"]) for r in sets}
+    # The faction set REPLACES the dwarf culture set. MIXER starts the faction as a Spirit of Grungni airship
+    # horde whose buildings come from the dwarf set; without them the horde is invalid and destroyed at
+    # load, killing the faction. So the caravan set contains the whole dwarf culture set as well.
+    dwarf_set = [r["building_chain"] for r in vanilla("building_chain_availability_sets_tables") if r["id"] == "wh_main_bas_dwf"]
+    assert len(dwarf_set) > 100, "dwarf culture building set not found"
     for set_id in sorted({r["id"] for r in sets}):
-        for ch in DWARF_MILITARY_CHAINS:
+        for ch in DWARF_MILITARY_CHAINS + dwarf_set:
             if (set_id, ch) not in in_set:
                 sets.append(dict(sets[0], id=set_id, building_chain=ch))
 
