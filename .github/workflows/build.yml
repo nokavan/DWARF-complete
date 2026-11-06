@@ -77,7 +77,12 @@ jobs:
           T=/tmp/conv_test/iron_caravan_dwf_test_noscript
           mkdir -p /tmp/conv_test && cp -r /tmp/conv/iron_caravan_dwf "$T"
           rm -rf "$T/script/campaign/mod/iron_caravan_init.lua" "$T/ui/iron_caravan" "$T/ui/eventpics"
+          # crash test pack 2: full scripts, caravan UI pictures removed
+          T2=/tmp/conv_test2/iron_caravan_dwf_test_noimages
+          mkdir -p /tmp/conv_test2 && cp -r /tmp/conv/iron_caravan_dwf "$T2"
+          rm -rf "$T2/ui/iron_caravan" "$T2/ui/eventpics"
           python3 tools/build_pack.py --mods-root /tmp/conv_test --ron /tmp/schema_wh3.ron | tail -2
+          python3 tools/build_pack.py --mods-root /tmp/conv_test2 --ron /tmp/schema_wh3.ron | tail -2
           rm -f /tmp/game/iron_caravan_draft.pack
 
       - name: Assembly Kit patch for the Hero Empire startpos

@@ -628,8 +628,11 @@ def patch_lua_lf(name, src):
         src = src.replace('"opening_employer"]="wh3_dlc23_chd_legion_of_azgorh"', '"opening_employer"]="%s"' % EMPLOYER)
     if name == "script/campaign/mod/iron_caravan_init.lua":
         src = TRACE_LUA + src
-        src = must_replace(src, "    narrative.add_data_setup_callback(function()\n",
-                           "    narrative.add_data_setup_callback(function()\n        ic_trace('narrative setup start')\n")
+        # The narrative block only blocks Chaos Dwarf tutorial chains (Labour, factories, Tower of Zharr) for the
+        # faction; MIXER already adds Dain's Expedition to the narrative system. Removed for the dwarf version.
+        a = src.index("if narrative and narrative.add_data_setup_callback then")
+        b = src.index("require('script/iron_caravan/campaign')(getfenv(1))")
+        src = src[:a] + "-- (Chaos Dwarf tutorial blocks removed in the dwarf version)\n" + src[b:]
         src = must_replace(src, "require('script/iron_caravan/campaign')(getfenv(1))",
                            "ic_trace('init: loading campaign script')\nrequire('script/iron_caravan/campaign')(getfenv(1))\n"
                            "ic_trace('init: done')")
