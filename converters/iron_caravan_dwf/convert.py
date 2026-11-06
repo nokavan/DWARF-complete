@@ -507,6 +507,11 @@ def main():
         os.makedirs(os.path.dirname(out), exist_ok=True)
         write_tsv(out, t, d["version"], d["path"], d["rows"], fl)
 
+    # MIXER kills its optional factions at the start of a new campaign unless a mod enabled them in the frontend
+    # (ScriptedValueRegistry flag "enable_<faction>", read in MIXER's pre-first-tick callback). The frontend
+    # registration is kept; this campaign script sets the same flag earlier as a safety net and logs what it found.
+    raw_files["script/campaign/mod/!ic_dwf_mixer_enable.lua"] = MIXER_ENABLE_LUA.encode("utf-8")
+
     # ---------------------------------------------------------------- 9. loc, scripts, other files
     for name, data in raw_files.items():
         if name.startswith("text/") and name.endswith(".loc"):
@@ -538,6 +543,20 @@ def header_version(data):
         return r.i32()
     return 0
 
+
+MIXER_ENABLE_LUA = """-- Iron Caravan (dwarfs): make sure MIXER does not remove Dain's Expedition at campaign start.
+-- MIXER (script/_lib/mod/mixer_lib_campaign.lua, mixer_kill_modder_factions) kills the leader and army of an
+-- optional faction when ScriptedValueRegistry has no "enable_<faction>" flag. Our frontend script registers the
+-- faction; this sets the flag again before MIXER's pre-first-tick check, using the same calls MIXER uses.
+local faction_key = "%s"
+local ok, err = pcall(function()
+    local svr = ScriptedValueRegistry:new()
+    local before = svr:LoadBool("enable_" .. faction_key)
+    svr:SaveBool("enable_" .. faction_key, true)
+    out("[Iron Caravan] MIXER enable flag for " .. faction_key .. " before: " .. tostring(before) .. ", now: true")
+end)
+if not ok then out("[Iron Caravan] could not set the MIXER enable flag: " .. tostring(err)) end
+""" % NEW_FACTION
 
 UNIT_WORD = re.compile(r"\b(%s)\b" % "|".join(sorted(map(re.escape, UNITS), key=len, reverse=True)))
 QUOTED = re.compile(r"""(["'])([A-Za-z0-9_]+)\1""")
