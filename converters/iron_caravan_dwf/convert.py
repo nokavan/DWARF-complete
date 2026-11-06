@@ -626,6 +626,13 @@ def patch_lua_lf(name, src):
         assert src.startswith("return {"), "config.lua layout changed"
         src = "local C=" + src[len("return "):] + "\n" + CONFIG_POST
         src = src.replace('"opening_employer"]="wh3_dlc23_chd_legion_of_azgorh"', '"opening_employer"]="%s"' % EMPLOYER)
+    if name == "script/campaign/mod/iron_caravan_init.lua":
+        src = TRACE_LUA + src
+        src = must_replace(src, "    narrative.add_data_setup_callback(function()\n",
+                           "    narrative.add_data_setup_callback(function()\n        ic_trace('narrative setup start')\n")
+        src = must_replace(src, "require('script/iron_caravan/campaign')(getfenv(1))",
+                           "ic_trace('init: loading campaign script')\nrequire('script/iron_caravan/campaign')(getfenv(1))\n"
+                           "ic_trace('init: done')")
     if name == "script/iron_caravan/ui.lua":
         src = must_replace(src, "{'arms','Armaments','icon_chd_armaments.png'},{'raw','Raw Materials','icon_chd_raw_materials.png'}",
                            "{'arms','Oathgold','icon_oathgold.png'},{'raw','Gold (materials)','icon_income.png'}")
@@ -651,6 +658,15 @@ def patch_lua_lf(name, src):
             else:
                 src = must_replace(src, line, "%sic_trace('%s')\n%s%sic_trace('done: %s')\n" % (indent, label, line, indent, label[:40]))
         src = must_replace(src, "local function log(message)\n", "local function log(message)\n    ic_trace(message)\n")
+        src = must_replace(src, "cm:add_saving_game_callback(function(context)\n",
+                           "cm:add_saving_game_callback(function(context)\n    ic_trace('saving game callback')\n")
+        src = must_replace(src, "cm:add_loading_game_callback(function(context)X.state=cm:load_named_value('IronCaravanV1',M.new(),context)end)\n",
+                           "cm:add_loading_game_callback(function(context)ic_trace('loading game callback');"
+                           "X.state=cm:load_named_value('IronCaravanV1',M.new(),context);ic_trace('loading game callback done')end)\n")
+        src = must_replace(src, "cm:add_post_first_tick_callback(function() X:guard('first tick',function()\n",
+                           "cm:add_post_first_tick_callback(function() ic_trace('first tick'); X:guard('first tick',function()\n")
+        assert src.rstrip().endswith("return X\nend"), "campaign.lua tail changed"
+        src = src.rstrip()[:-len("return X\nend")] + "ic_trace('campaign script registered')\nreturn X\nend\n"
         src = must_replace(src, "local function ensure_rykarth_mount(character)\n",
                            "local function ensure_rykarth_mount(character)\n    do return end -- dwarf conversion: no Skullcannon\n")
         src = must_replace(src, "local function pooled(key)\n",
