@@ -94,6 +94,12 @@ jobs:
           mkdir -p /tmp/conv_addon2 && cp -r /tmp/conv_addon/iron_caravan_dwarfs_addon "$A2"
           rm -rf "$A2/db/slot_template_permitted_building_chains_tables" "$A2/db/building_chain_availability_sets_tables"
           python3 tools/build_pack.py --mods-root /tmp/conv_addon2 --ron /tmp/schema_wh3.ron | tail -2
+          # test variants: tables only (no add-on script) / script only (no tables)
+          A3=/tmp/conv_addon3/iron_caravan_dwarfs_addon_test_dbonly
+          mkdir -p /tmp/conv_addon3 && cp -r "$A2" "$A3" && rm -rf "$A3/script"
+          A4=/tmp/conv_addon3/iron_caravan_dwarfs_addon_test_scriptonly
+          cp -r "$A2" "$A4" && rm -rf "$A4/db"
+          python3 tools/build_pack.py --mods-root /tmp/conv_addon3 --ron /tmp/schema_wh3.ron | tail -3
           rm -f /tmp/game/iron_caravan_draft.pack
 
       - name: Assembly Kit patch for the Hero Empire startpos
