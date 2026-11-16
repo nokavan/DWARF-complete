@@ -23,7 +23,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
-sys.path.insert(0, os.path.join(ROOT, "converters", "iron_caravan_dwf"))
+sys.path.insert(0, os.path.join(ROOT, "archive", "iron_caravan_dwf"))
 import packlib  # noqa: E402
 from game_data import Pack, load_meta, load_schema, write_tsv  # noqa: E402
 from convert import UNITS, EFFECTS, DWARF_MILITARY_CHAINS, header_version  # noqa: E402
